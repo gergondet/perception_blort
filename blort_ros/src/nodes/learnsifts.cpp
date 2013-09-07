@@ -88,6 +88,13 @@ void cam_info_callback(const sensor_msgs::CameraInfo &msg)
     cam_info_sub.shutdown();
 }
 
+struct TranslateStart
+{
+    bool starting;
+    int x;
+    int y;
+};
+
 int main(int argc, char *argv[] )
 {
     std::string config_root = argv[1];
@@ -203,6 +210,9 @@ int main(int argc, char *argv[] )
     pThreadRec->Event();
 
     bool quit = false;
+    bool translateXY = false;
+    bool translateZ = false;
+    TranslateStart start;
     while(!quit)
     {
         tracker.getModelMovementState(modelID, movement);
@@ -302,6 +312,57 @@ int main(int argc, char *argv[] )
                     //tracker.setModelInitialPose(modelID, trPose);
                     //tracker.reset(modelID);
                     tracker.saveModels(pal_blort::addRoot("Resources/ply/", config_root).c_str());
+                }
+            }
+            if(event.type == blortGLWindow::TMGL_Press)
+            {
+                /* TomGine does not report the click location hence the "starting hack" */
+                if(event.input == blortGLWindow::TMGL_Button3 && !translateZ)
+                {
+                    translateXY = true;
+                    start.starting = true;
+                }
+                if(event.input == blortGLWindow::TMGL_Button2 && !translateXY)
+                {
+                    translateZ = true;
+                    start.starting = true;
+                }
+            }
+            if(event.type == blortGLWindow::TMGL_Release)
+            {
+                if(event.input == blortGLWindow::TMGL_Button3)
+                {
+                    translateXY = false;
+                    start.starting = false;
+                }
+                if(event.input == blortGLWindow::TMGL_Button2)
+                {
+                    translateZ = false;
+                    start.starting = false;
+                }
+            }
+            if(event.type == blortGLWindow::TMGL_Motion)
+            {
+                if(translateXY)
+                {
+                    if(start.starting) { start.starting = false; start.x = event.motion.x; start.y = event.motion.y; }
+                    float translateX = start.x - event.motion.x;
+                    float translateY = start.y - event.motion.y;
+                    trackParams.camPar.pos.x += trackParams.camPar.rot.mat[0]*(translateX)*0.001 + trackParams.camPar.rot.mat[1]*(translateY)*0.001;
+                    trackParams.camPar.pos.y += trackParams.camPar.rot.mat[3]*(translateX)*0.001 + trackParams.camPar.rot.mat[4]*(translateY)*0.001;
+                    trackParams.camPar.pos.z += trackParams.camPar.rot.mat[6]*(translateX)*0.001 + trackParams.camPar.rot.mat[7]*(translateY)*0.001;
+                    start.x = event.motion.x; start.y = event.motion.y;
+                    tracker.setCameraParameters(trackParams.camPar);
+                }
+                if(translateZ)
+                {
+                    if(start.starting) { start.starting = false; start.y = event.motion.y; }
+                    float translateZ = start.y - event.motion.y;
+                    trackParams.camPar.pos.x += trackParams.camPar.rot.mat[2]*(translateZ)*0.001;
+                    trackParams.camPar.pos.y += trackParams.camPar.rot.mat[5]*(translateZ)*0.001;
+                    trackParams.camPar.pos.z += trackParams.camPar.rot.mat[8]*(translateZ)*0.001;
+                    start.x = event.motion.x; start.y = event.motion.y;
+                    tracker.setCameraParameters(trackParams.camPar);
                 }
             }
             event.type = blortGLWindow::TMGL_None;
