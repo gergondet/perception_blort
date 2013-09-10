@@ -90,7 +90,6 @@ void cam_info_callback(const sensor_msgs::CameraInfo &msg)
 
 struct TranslateStart
 {
-    bool starting;
     int x;
     int y;
 };
@@ -317,21 +316,20 @@ int main(int argc, char *argv[] )
             }
             if(event.type == blortGLWindow::TMGL_Press)
             {
-                /* TomGine does not report the click location hence the "starting hack" */
                 if(event.input == blortGLWindow::TMGL_Button3 && !translateZ && !rotateXZ)
                 {
                     translateXY = true;
-                    start.starting = true;
+                    start.x = event.motion.x; start.y = event.motion.y;
                 }
                 if(event.input == blortGLWindow::TMGL_Button2 && !translateXY && !rotateXZ)
                 {
                     translateZ = true;
-                    start.starting = true;
+                    start.x = event.motion.x; start.y = event.motion.y;
                 }
                 if(event.input == blortGLWindow::TMGL_Button1 && !translateXY && !translateZ)
                 {
                     rotateXZ = true;
-                    start.starting = true;
+                    start.x = event.motion.x; start.y = event.motion.y;
                 }
             }
             if(event.type == blortGLWindow::TMGL_Release)
@@ -339,24 +337,20 @@ int main(int argc, char *argv[] )
                 if(event.input == blortGLWindow::TMGL_Button3)
                 {
                     translateXY = false;
-                    start.starting = false;
                 }
                 if(event.input == blortGLWindow::TMGL_Button2)
                 {
                     translateZ = false;
-                    start.starting = false;
                 }
                 if(event.input == blortGLWindow::TMGL_Button1)
                 {
                     rotateXZ = false;
-                    start.starting = false;
                 }
             }
             if(event.type == blortGLWindow::TMGL_Motion)
             {
                 if(translateXY)
                 {
-                    if(start.starting) { start.starting = false; start.x = event.motion.x; start.y = event.motion.y; }
                     float translateX = start.x - event.motion.x;
                     float translateY = start.y - event.motion.y;
                     trackParams.camPar.pos.x += trackParams.camPar.rot.mat[0]*(translateX)*0.001 + trackParams.camPar.rot.mat[1]*(translateY)*0.001;
@@ -367,7 +361,6 @@ int main(int argc, char *argv[] )
                 }
                 if(translateZ)
                 {
-                    if(start.starting) { start.starting = false; start.y = event.motion.y; }
                     float translateZ = start.y - event.motion.y;
                     trackParams.camPar.pos.x += trackParams.camPar.rot.mat[2]*(translateZ)*0.001;
                     trackParams.camPar.pos.y += trackParams.camPar.rot.mat[5]*(translateZ)*0.001;
@@ -377,7 +370,6 @@ int main(int argc, char *argv[] )
                 }
                 if(rotateXZ)
                 {
-                    if(start.starting) { start.starting = false, start.x = event.motion.x; start.y = event.motion.y; }
                     float thetaX = (event.motion.y - start.y)*0.01; float cthetaX = cos(thetaX); float sthetaX = sin(thetaX);
                     float thetaZ = (event.motion.x - start.x)*0.01; float cthetaZ = cos(thetaZ); float sthetaZ = sin(thetaZ);
                     mat3 mat;
