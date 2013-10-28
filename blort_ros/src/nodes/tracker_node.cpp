@@ -156,7 +156,7 @@ public:
 
                 confidences_pub.publish(tracker->getConfidences());
                 if(tracker->getConfidence() == blort_ros::TRACKER_CONF_GOOD ||
-                    (tracker->getConfidence() == blort_ros::TRACKER_CONF_FAIR && tracker->getPublishMode() == TRACKER_PUBLISH_ALL) )
+                    (tracker->getConfidence() == blort_ros::TRACKER_CONF_FAIR && tracker->getPublishMode() == blort_ros::TRACKER_PUBLISH_ALL) )
                 {
                     geometry_msgs::Pose target_pose = pal_blort::blortPosesToRosPose(tracker->getCameraReferencePose(),
                                                                                      tracker->getDetections()[0]);
