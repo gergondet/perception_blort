@@ -370,23 +370,23 @@ int main(int argc, char *argv[] )
                 }
                 if(rotateXZ)
                 {
-                    float thetaX = (event.motion.y - start.y)*0.01; float cthetaX = cos(thetaX); float sthetaX = sin(thetaX);
+                    float thetaX = (-event.motion.y + start.y)*0.01; float cthetaX = cos(thetaX); float sthetaX = sin(thetaX);
                     float thetaZ = (event.motion.x - start.x)*0.01; float cthetaZ = cos(thetaZ); float sthetaZ = sin(thetaZ);
-                    mat3 mat;
+                    mat3 mRot;
                     float x = trackParams.camPar.pos.x;
                     float y = trackParams.camPar.pos.y;
                     float z = trackParams.camPar.pos.z;
-                    /* Rotation around X */
-                    mat.rotate_x(57.3*thetaX);
-                    trackParams.camPar.pos.y = y*cthetaX + z*sthetaX;
-                    trackParams.camPar.pos.z = -y*sthetaX + z*cthetaX;
-                    trackParams.camPar.rot = trackParams.camPar.rot*mat;
-                    y = trackParams.camPar.pos.y;
                     /* Rotation around Z */
-                    mat.rotate_z(57.3*thetaZ);
+                    mRot.rotate_z(57.3*thetaZ);
                     trackParams.camPar.pos.x = x*cthetaZ + y*sthetaZ;
                     trackParams.camPar.pos.y = -x*sthetaZ + y*cthetaZ;
-                    trackParams.camPar.rot = trackParams.camPar.rot*mat;
+                    trackParams.camPar.rot = trackParams.camPar.rot*mRot;
+                    y = trackParams.camPar.pos.y;
+                    /* Rotation around X */
+                    mRot.rotate_x(57.3*thetaX);
+                    trackParams.camPar.pos.y = y*cthetaX + z*sthetaX;
+                    trackParams.camPar.pos.z = -y*sthetaX + z*cthetaX;
+                    trackParams.camPar.rot = trackParams.camPar.rot*mRot;
                     start.x = event.motion.x; start.y = event.motion.y;
                     tracker.setCameraParameters(trackParams.camPar);
                 }
