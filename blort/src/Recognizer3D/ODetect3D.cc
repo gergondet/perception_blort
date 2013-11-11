@@ -104,8 +104,10 @@ namespace P
                     matches.PushBack(new KeyClusterPair(key, cb[idx]));
             }
         }
+#ifdef VERBOSE_INFO
         ROS_INFO("odetect3d::matchkeypoints() run: %f ms",
                  1000*(cv::getTickCount() - ticksBefore)/cv::getTickFrequency());
+#endif
     }
 
     /**
@@ -173,8 +175,10 @@ namespace P
 
       delete[] match_buf;
 
+#ifdef VERBOSE_INFO
       ROS_INFO("\tODetect3D::MatchKeypointsGPU() time: %f ms",
                1000*(cv::getTickCount() - ticksBefore)/cv::getTickFrequency());
+#endif
     }
 
 
@@ -274,7 +278,9 @@ namespace P
         //time: 789 ms
         cv::gpu::solvePnPRansac(modelPoints, imgPoints, camMatrix, distortionCoeff, rvec, tvec, false, Def::DO_MAX_RANSAC_TRIALS, Def::DO_RANSAC_INL_DIST, 100, &inliersIdx);
         numInl = inliersIdx.size();
+#ifdef VERBOSE_INFO
         ROS_INFO("\tODetect3D::Detect: FitModelRANSAC_GPU(OpenCV::gpu) time: %.01f ms", 1000*(cv::getTickCount() - ticksBefore)/cv::getTickFrequency());
+#endif
       }
       else
       {
@@ -285,14 +291,20 @@ namespace P
         //time: 706 ms
         cv::solvePnPRansac(modelPoints, imgPoints, camMatrix, distortionCoeff, rvec, tvec, false, Def::DO_MAX_RANSAC_TRIALS, Def::DO_RANSAC_INL_DIST, 100, inliersIdx);
         numInl = inliersIdx.rows;
+#ifdef VERBOSE_INFO
         ROS_INFO("\tODetect3D::Detect: FitModelRANSAC_GPU(OpenCV) time: %.01f ms", 1000*(cv::getTickCount() - ticksBefore)/cv::getTickFrequency());
+#endif
       }
 
+#ifdef VERBOSE_INFO
       ROS_INFO_STREAM("\tInliers: " << numInl);
+#endif
 
       cv::Mat rotation;
       cv::Rodrigues(rvec, rotation);      
+#ifdef VERBOSE_INFO
       ROS_INFO_STREAM("Rotation (depth: " << rotation.depth() << ") :\n" << rotation << "\n");
+#endif
 
       if ( rotation.depth() == CV_32F )
       {
@@ -384,13 +396,17 @@ namespace P
 
       numInl=inls;
 
+#ifdef VERBOSE_INFO
       ROS_INFO_STREAM("Inliers: " << numInl << " iterations: " << iterations);
+#endif
 
       cvReleaseMat(&modelPoints);
       cvReleaseMat(&imgPoints);
       cvReleaseMat(&rod);
 
+#ifdef VERBOSE_INFO
       ROS_INFO("\tODetect3D::Detect: FitModelRANSAC time: %.01f ms", 1000*(cv::getTickCount() - ticksBefore)/cv::getTickFrequency());
+#endif
     }
 
     /**
@@ -443,11 +459,13 @@ namespace P
         ct.y = cvmGet(pose.t,1,0);
         ct.z = cvmGet(pose.t,2,0);
 
+#ifdef VERBOSE_INFO
         ROS_INFO("\t\tct and cR in RefinePoseLS:");
         ROS_INFO("\t\t [%.04f  %.04f  %.04f]", ct.x, ct.y, ct.z);
         ROS_INFO("\t\t [%.04f  %.04f  %.04f]", cR[0], cR[3], cR[6]);
         ROS_INFO("\t\t [%.04f  %.04f  %.04f]", cR[1], cR[4], cR[7]);
         ROS_INFO("\t\t [%.04f  %.04f  %.04f]", cR[2], cR[5], cR[8]);
+#endif
 
         double dist, minz=DBL_MAX, maxz=DBL_MIN;
         Array<Point3D> modelPoints;
@@ -596,7 +614,9 @@ namespace P
 
         double ticksBefore = cv::getTickCount();
         RefinePoseLS(matches, object.pose, numInl, object.err);     // least squares pose
+#ifdef VERBOSE_INFO
         ROS_INFO("\tODetect3D::Detect: RefinePoseLS time: %.01f ms", 1000*(cv::getTickCount() - ticksBefore)/cv::getTickFrequency());
+#endif
 
         ComputeConfidence(keys, numInl, object);
 

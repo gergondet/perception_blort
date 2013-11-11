@@ -150,13 +150,13 @@ public:
                     if(recovery_client.call(srv))
                     {
                       //tracker = new blort_ros::GLTracker(_msg, root_, true);
-                      ROS_INFO("reseting tracker with pose from detector\n");
+                      ROS_INFO("reseting tracker with pose from detector");
                       tracker->resetWithPose(i, srv.response.Pose);
-                      ROS_INFO("AFTER reseting tracker with pose from detector\n");
+                      ROS_INFO("AFTER reseting tracker with pose from detector");
                     }
                     else
                     {
-                        ROS_WARN("Detector not confident enough.\n");
+                        ROS_WARN("Detector not confident enough.");
                     }
                 }
                 else //TRACKER_TRACKING_MODE or TRACKER_LOCKED_MODE
@@ -166,7 +166,7 @@ public:
             }
             if(should_process)
             {
-                ROS_INFO("\n----------------------------------------------\n");
+                ROS_INFO("----------------------------------------------");
                 ROS_INFO("TrackerNode::imageCb: calling tracker->process");
                 tracker->process(cv_tracker_ptr->image);
                 for(size_t i = 0; i < tracker->getModes().size(); ++i)
@@ -413,8 +413,8 @@ private:
                                                                results.back());
                     //NOTE: check the pose in vec3 location + mat3x3 rotation could be added here
                     // if we have any previous knowledge of the given scene
-                    ROS_INFO_STREAM("PUBLISHED POSE: \n" << resp.Pose.position << "\n" <<
-                                    pal_blort::quaternionTo3x3cvMat(resp.Pose.orientation) << "\n");
+                    ROS_INFO_STREAM("PUBLISHED POSE:" << std::endl << resp.Pose.position << std::endl <<
+                                    pal_blort::quaternionTo3x3cvMat(resp.Pose.orientation) << std::endl);
                     return true;
                 } else {
                     //if the time was not enough to get a good detection, make the whole thing fail

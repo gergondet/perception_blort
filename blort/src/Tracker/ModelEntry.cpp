@@ -180,8 +180,10 @@ void ModelEntry::evaluate_states(const Particle &variation, unsigned rec,
 	else
 		st_movement = ST_FAST;
 
+#ifdef VERBOSE_INFO
   ROS_INFO_STREAM("(" << label << ") ModeEntry: evaluate_states: c_edge = " << c_edge << "  c_th = " << c_th << " c_lost = " << c_lost << "  c_th_lost = " << c_th_lost);
   ROS_INFO_STREAM("                            st_movement = " << st_movement << "  st_quality = " << st_quality);
+#endif
 	
 	//// Lost detection
   if( c_lost > c_th_lost )
@@ -218,6 +220,8 @@ void ModelEntry::evaluate_states(const Particle &variation, unsigned rec,
 		st_quality = ST_OK;
 	}
 
+#ifdef VERBOSE_INFO
   ROS_INFO_STREAM("(" << label << ") ModelEntry::evaluate_states has set st_confidence = " << st_confidence << "  st_quality = " << st_quality);
+#endif
 	
 }

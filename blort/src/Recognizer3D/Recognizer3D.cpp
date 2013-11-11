@@ -183,7 +183,9 @@ bool Recognizer3D::recognize(IplImage* tFrame, std::vector< boost::shared_ptr<To
     }else{
         cvCopy(tFrame, tImg);
     }
+#ifdef VERBOSE_INFO
     ROS_INFO("Recognizer3D::recognize: undistort time: %.01f ms", 1000*(cv::getTickCount() - ticksBefore)/cv::getTickFrequency());
+#endif
 
 
     // convert to gray scale image
@@ -192,7 +194,9 @@ bool Recognizer3D::recognize(IplImage* tFrame, std::vector< boost::shared_ptr<To
     // extract sifts from current image
     ticksBefore = cv::getTickCount();
     sift.Operate(grey, m_image_keys);
+#ifdef VERBOSE_INFO
     ROS_INFO("Recognizer3D::recognize: extract sift time: %.01f ms", 1000*(cv::getTickCount() - ticksBefore)/cv::getTickFrequency());
+#endif
 
     m_detect.SetDebugImage(tImg);
 
@@ -208,7 +212,9 @@ bool Recognizer3D::recognize(IplImage* tFrame, std::vector< boost::shared_ptr<To
     {
         confs[i] = 0;
         bool detectResult = m_detect.Detect(m_image_keys, *m_sift_models[i]);
+#ifdef VERBOSE_INFO
         ROS_INFO("Recognizer3D::recognize: ODetect3D::Detect time: %.01f ms\n", 1000*(cv::getTickCount() - ticksBefore)/cv::getTickFrequency());
+#endif
         if ( detectResult )
         {
             if(m_sift_models[i]->conf > 0.03)

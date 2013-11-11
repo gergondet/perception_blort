@@ -1,0 +1,7 @@
+option( VERBOSE_INFO "Output additionnal information during runtime?" OFF )
+if(VERBOSE_INFO)
+    message("Additionnal information will be reported to ROS during runtime")
+    add_definitions("-DVERBOSE_INFO")
+else()
+    message("No additional information during runtime.")
+endif()

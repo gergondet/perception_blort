@@ -88,13 +88,11 @@ bool GLDetector::recoveryWithLast(size_t obj_id, blort_ros::RecoveryCall::Respon
         recPoses.push_back(boost::shared_ptr<TomGine::tgPose>(new TomGine::tgPose()));
     }
     std::vector<float> confs(sift_files.size(), 0);
-    ROS_INFO("\n");
     recognizer->recognize(image_, recPoses, confs);
 
-    ROS_INFO("object (%d) conf: %f", obj_id, confs[obj_id]);
-    ROS_WARN("Tried to recover for the %d. time.", rec3dcounter++);
-    ROS_INFO("Recovery execution time: %f ms",
-             1000*(cv::getTickCount() - ticksBefore)/cv::getTickFrequency());
+    ROS_INFO_STREAM("object (" << model_names[obj_id] << ") conf: " << confs[obj_id]);
+    ROS_WARN_STREAM("Tried to recover for the " << rec3dcounter++ << ". time.");
+    ROS_INFO_STREAM("Recovery execution time: " << 1000*(cv::getTickCount() - ticksBefore)/cv::getTickFrequency() << " ms");
 
     // if the recovery's confidence is high enough then propose this new pose
     if(confs[obj_id] > recovery_conf_threshold)

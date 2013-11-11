@@ -132,9 +132,7 @@ public:
 //            debug_msg.image = detector->getDebugImage();
 //            debug_pub.publish(debug_msg.toImageMsg());
 
-            ROS_INFO("\n");
-            ROS_INFO_STREAM("= > detector_node returned " << result << "\n");
-            ROS_INFO("\n");
+            ROS_INFO_STREAM("= > detector_node returned " << result);
 
             return result;
         } else {

@@ -176,7 +176,7 @@ void GLTracker::track()
         }
         else if(qualities[i] == Tracking::ST_LOST)
         {
-          ROS_INFO("GLTracker::track: switching tracker to RECOVERY_MODE because object LOST\n");
+          ROS_INFO_STREAM("GLTracker::track: switching tracker to RECOVERY_MODE because object " << model_names_[i] << "LOST");
           switchToRecovery(i);
         }
 
@@ -357,7 +357,7 @@ void GLTracker::update()
 
 void GLTracker::reset()
 {
-    ROS_INFO("GLTracker::reset: switching tracker to RECOVERY_MODE\n");
+    ROS_INFO("GLTracker::reset: switching tracker to RECOVERY_MODE");
     for(size_t i = 0; i < model_ids.size(); ++i)
     {
         switchToRecovery(i);
