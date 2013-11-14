@@ -96,8 +96,8 @@ void TrackerNode::imageCb(const sensor_msgs::ImageConstPtr& detectorImgMsg, cons
                       msg.pose.header.seq = pose_seq++;
                       msg.pose.header.stamp = ros::Time::now();
                       msg.pose.header.frame_id = camera_frame_id;
-                      msg.pose.pose = pal_blort::blortPosesToRosPose(tracker->getCameraReferencePose(),
-                                                                                       tracker->getDetections()[i]);
+                      msg.pose.pose = pal_blort::blortPosesToRosPose(tracker->getCameraReferencePose(), tracker->getDetections()[i]);
+                      msg.poseInCamera = tracker->getDetections()[i];
 
                       detection_result.publish(msg);
                   }
