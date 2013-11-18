@@ -32,7 +32,8 @@ target_link_libraries(learnsifts module_tomgine module_glwindow module_tracker m
 
 rosbuild_add_executable(gltracker_node src/nodes/tracker_node.cpp
                                        src/trackerinterface.hpp
-                                       src/gltracker.cpp)
+                                       src/gltracker.cpp
+                                       src/ObjectEntry.cpp)
 target_link_libraries(gltracker_node ${OpenCV_INCLUDE_DIRS}
                                    module_tomgine 
                                    module_tracker
@@ -40,7 +41,8 @@ target_link_libraries(gltracker_node ${OpenCV_INCLUDE_DIRS}
                                   GLU GL glut X11 rt)
 
 rosbuild_add_executable(gldetector_node src/nodes/detector_node.cpp
-                                      src/gldetector.cpp)
+                                      src/gldetector.cpp
+                                      src/ObjectEntry.cpp)
 target_link_libraries(gldetector_node ${OpenCV_INCLUDE_DIRS}
                                    module_tracker
                                    module_tomgine 
