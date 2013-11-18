@@ -92,7 +92,7 @@ void TrackerNode::imageCb(const sensor_msgs::ImageConstPtr& detectorImgMsg, cons
                       (tracker->getConfidence()[i] == blort_ros::TRACKER_CONF_FAIR && tracker->getPublishMode() == blort_ros::TRACKER_PUBLISH_ALL) )
                   {
                       blort_ros::TrackerResults msg;
-                      msg.obj_name.data = tracker->getModelNames()[i];
+                      msg.obj_name.data = tracker->getModelName(i);
                       msg.pose.header.seq = pose_seq++;
                       msg.pose.header.stamp = ros::Time::now();
                       msg.pose.header.frame_id = camera_frame_id;
@@ -122,7 +122,7 @@ void TrackerNode::recovery(blort_ros::RecoveryCall srv)
         ss << "tracker_node calling detector_node recovery service for object(s): ";
         for(size_t i = 0; i < srv.request.object_ids.size();)
         {
-            ss << tracker->getModelNames()[srv.request.object_ids[i].data];
+            ss << tracker->getModelName(srv.request.object_ids[i].data);
             if(++i != srv.request.object_ids.size()) { ss << ", "; }
         }
         ROS_INFO(ss.str().c_str());

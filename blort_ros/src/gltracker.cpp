@@ -79,7 +79,31 @@ GLTracker::GLTracker(const sensor_msgs::CameraInfo camera_info,
     //FIXME: make these ROS parameters or eliminate them and use the content as parameters
     std::string tracking_ini(pal_blort::addRoot("bin/tracking.ini", config_root));
 
-    GetPlySiftFilenames(tracking_ini.c_str(), ply_models_, sift_files_, model_names_);
+    std::vector<std::string> ply_models(0), sift_files(0), model_names(0);
+    GetPlySiftFilenames(tracking_ini.c_str(), ply_models, sift_files, model_names);
+    // Build ModelEntry with these entries
+    for(size_t i = 0; i < model_names.size(); ++i)
+    {
+        ObjectEntry entry;
+        entry.name = model_names[i];
+        for(size_t j = 0; j < ply_models.size(); ++j)
+        {
+            if(ply_models[j].find(entry.name) != std::string::npos)
+            {
+                entry.ply_model = ply_models[j];
+                break;
+            }
+        }
+        for(size_t j = 0; j < sift_files.size(); ++j)
+        {
+            if(sift_files[j].find(entry.name) != std::string::npos)
+            {
+                entry.sift_files.push_back(sift_files[j]);
+            }
+        }
+        objects_.push_back(entry);
+    }
+
     GetTrackingParameter(track_params, tracking_ini.c_str(), config_root);
 
     tgcam_params = TomGine::tgCamera::Parameter(camera_info);
@@ -89,12 +113,12 @@ GLTracker::GLTracker(const sensor_msgs::CameraInfo camera_info,
 
     tracker.init(track_params);
 
-    for(size_t i = 0; i < ply_models_.size(); ++i)
+    for(size_t i = 0; i < objects_.size(); ++i)
     {
         trPoses.push_back(boost::shared_ptr<TomGine::tgPose>(new TomGine::tgPose));
         trPoses[i]->t = vec3(0.0, 0.1, 0.0);
         trPoses[i]->Rotate(0.0f, 0.0f, 0.5f);
-        model_ids.push_back(tracker.addModelFromFile(pal_blort::addRoot(ply_models_[i], config_root).c_str(), *trPoses[i], model_names_[i].c_str(), true));
+        model_ids.push_back(tracker.addModelFromFile(pal_blort::addRoot(objects_[i].ply_model, config_root).c_str(), *trPoses[i], objects_[i].name.c_str(), true));
         movements.push_back(Tracking::ST_SLOW);
         qualities.push_back(Tracking::ST_LOST);
         tracking_confidences.push_back(Tracking::ST_BAD);
@@ -102,7 +126,7 @@ GLTracker::GLTracker(const sensor_msgs::CameraInfo camera_info,
         current_confs.push_back(blort_ros::TRACKER_CONF_LOST);
         tracker_confidences.push_back(boost::shared_ptr<TrackerConfidences>(new TrackerConfidences));
     }
-    result.resize(ply_models_.size());
+    result.resize(objects_.size());
     tracker.setLockFlag(true);
 
     image = cvCreateImage( cvSize(tgcam_params.width, tgcam_params.height), 8, 3 );
@@ -115,7 +139,7 @@ GLTracker::GLTracker(const sensor_msgs::CameraInfo camera_info,
 void GLTracker::resetParticleFilter(size_t obj_i)
 {
   tracker.removeModel(model_ids[obj_i]);
-  model_ids[obj_i] = tracker.addModelFromFile(pal_blort::addRoot(ply_models_[obj_i], config_root_).c_str(), *trPoses[obj_i], model_names_[obj_i].c_str(), true);
+  model_ids[obj_i] = tracker.addModelFromFile(pal_blort::addRoot(objects_[obj_i].ply_model, config_root_).c_str(), *trPoses[obj_i], objects_[obj_i].name.c_str(), true);
   movements[obj_i] = Tracking::ST_SLOW;
   qualities[obj_i]  = Tracking::ST_LOST;
   tracking_confidences[obj_i] = Tracking::ST_BAD;
@@ -177,7 +201,7 @@ void GLTracker::track()
         }
         else if(qualities[i] == Tracking::ST_LOST)
         {
-          ROS_INFO_STREAM("GLTracker::track: switching tracker to RECOVERY_MODE because object " << model_names_[i] << "LOST");
+          ROS_INFO_STREAM("GLTracker::track: switching tracker to RECOVERY_MODE because object " << objects_[i].name << "LOST");
           switchToRecovery(i);
         }
 
@@ -316,7 +340,7 @@ void GLTracker::update()
     {
         //update confidences for output
         Tracking::ModelEntry* myModelEntry = tracker.getModelEntry(model_ids[i]);
-        tracker_confidences[i]->obj_name.data = model_names_[i];
+        tracker_confidences[i]->obj_name.data = objects_[i].name;
         tracker_confidences[i]->edgeConf = myModelEntry->c_edge;
         tracker_confidences[i]->confThreshold = myModelEntry->c_th;
         tracker_confidences[i]->lostConf = myModelEntry->c_lost;
@@ -327,7 +351,7 @@ void GLTracker::update()
         // although the implementation would allow it, at several places, lacks this at several other.
         tracker.getModelMovementState(model_ids[i], movements[i]);
         tracker.getModelQualityState(model_ids[i], qualities[i]);
-        ROS_INFO_STREAM("GLTracker::update: the tracked model for " << model_names_[i] << " has set quality to " << qualities[i]);
+        ROS_INFO_STREAM("GLTracker::update: the tracked model for " << objects_[i].name << " has set quality to " << qualities[i]);
         tracker.getModelConfidenceState(model_ids[i], tracking_confidences[i]);
 
         switch(tracking_confidences[i])
