@@ -26,7 +26,7 @@ class Resources : public Singleton <Resources>
 {
 friend class Singleton <Resources>;
 private:
-	Resources();
+	BLORT_API Resources();
 	
 	// Singleton Resources (one instance in programm)
 	CvCapture* 			m_capture;
@@ -47,7 +47,7 @@ private:
 
 public:
 	BLORT_API ~Resources();
-	BLORT_API static Resources* GetInstance(){
+	static Resources* GetInstance(){
 		return Singleton <Resources>::GetInstance ();
 	}
 	
@@ -61,7 +61,7 @@ public:
 	BLORT_API void ReleaseImageProcessor();
     
     // Set-function
-	BLORT_API void 	SetShaderPath(const char* path){ sprintf(m_shaderPath, "%s", path); }
+	BLORT_API void 	SetShaderPath(const char* path);
 	BLORT_API void	ShowLog(bool b){ m_showlog = b; }
 
 	// Get-functions

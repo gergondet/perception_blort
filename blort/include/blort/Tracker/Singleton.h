@@ -24,7 +24,7 @@ public:
 	virtual ~Singleton(){
 		m_instance = 0;
 	}
-private:
+protected:
 	static T* m_instance;
 protected:
 	Singleton() { }

@@ -4,10 +4,16 @@
 #define ROS_DEBUG(...) printf(__VA_ARGS__)
 #endif
 #include <blort/Tracker/Resources.h>
+#include <iostream>
 
 using namespace Tracking;
 
 // *** PRIVATE ***
+
+void Resources::SetShaderPath(const char* path)
+{
+    sprintf(m_shaderPath, "%s", path); 
+}
 
 int Resources::SearchName(NameList* list, const char* filename){
 	// parse through name list
@@ -27,6 +33,7 @@ int Resources::SearchName(NameList* list, const char* filename){
 // *** PUBLIC ***
 
 Resources::Resources(){
+    m_instance = this;
 	m_capture = 0;
 	m_image = 0;
 	m_ip = 0;
