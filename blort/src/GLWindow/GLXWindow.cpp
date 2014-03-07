@@ -1,12 +1,11 @@
-
-#ifdef LINUX
-
 #include <blort/GLWindow/GLWindow.h>
 #include <stdio.h>
 #include <stdexcept>
 #include <vector>
 
 namespace blortGLWindow{
+
+#ifdef LINUX
 
 void GLWindow::init(unsigned int width, unsigned int height, const char* name, bool visible){
 	GLint att[] = { GLX_RGBA, GLX_DEPTH_SIZE, 24, GLX_DOUBLEBUFFER, None };
@@ -72,7 +71,38 @@ void GLWindow::Update(){
 	glXSwapBuffers(dpy, glWin);
 }
 
-} /* namespace */
+#else
+
+void GLWindow::init(unsigned int width, unsigned int height, const char* name, bool visible){
+}
+
+void GLWindow::quit(){
+}
+
+GLWindow::GLWindow(){
+	init(320,240,"OpenGL Window");
+}
+GLWindow::GLWindow(unsigned int width, unsigned int height){
+	init(width, height, "OpenGL Window");
+}
+GLWindow::GLWindow(unsigned int width, unsigned int height, const char* name, bool visible){
+  init(width, height, name, visible);
+}
+GLWindow::~GLWindow(){
+	quit();
+}
+
+void GLWindow::Activate(){
+}
+
+void GLWindow::Update(){
+}
+
+bool GLWindow::GetEvent(Event &event){
+    return false;
+}
 
 #endif /* LINUX */
+
+} /* namespace */
 

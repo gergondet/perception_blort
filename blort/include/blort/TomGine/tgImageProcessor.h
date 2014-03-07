@@ -39,36 +39,36 @@ private:
 	void initFBO(int res);
 
 public:
-	tgImageProcessor(	const char *gauss_frag_file,
+	BLORT_API tgImageProcessor(	const char *gauss_frag_file,
 						const char *sobel_frag_file,
 						const char *thinning_frag_file,
 						const char *spreading_frag_file,
 						unsigned img_width, unsigned img_height,
 						int avg_resolution);
-	~tgImageProcessor();
+	BLORT_API ~tgImageProcessor();
 	
-	void initShader(float width, float height);
+	BLORT_API void initShader(float width, float height);
 
 	// Set functions
-	void setCamOrtho();
-	int getWidth(){ return m_width; }
-	int getHeight(){ return m_height; }
+	BLORT_API void setCamOrtho();
+	BLORT_API int getWidth(){ return m_width; }
+	BLORT_API int getHeight(){ return m_height; }
 
 	// Image Processing functions
-	void flipUpsideDown(const tgTexture& source, tgTexture& result);
-	void copy(const tgTexture& source, tgTexture& result);
-	void gauss(const tgTexture& source, tgTexture& result);
-	void sobel(const tgTexture& source, tgTexture& result, float threshold=0.01, bool normalise=false, bool binary=false);
-	void sobel(const tgTexture& source, tgTexture& result, tgTexture& mask, float threshold=0.01, bool normalize=false, bool binary=false);
-	void thinning(const tgTexture& source, tgTexture& result);
-	void thinning(const tgTexture& source, tgTexture& result, tgTexture& mask);
-	void spreading(const tgTexture& source, tgTexture& result);
-	void render(const tgTexture& tex);
+	BLORT_API void flipUpsideDown(const tgTexture& source, tgTexture& result);
+	BLORT_API void copy(const tgTexture& source, tgTexture& result);
+	BLORT_API void gauss(const tgTexture& source, tgTexture& result);
+	BLORT_API void sobel(const tgTexture& source, tgTexture& result, float threshold=0.01, bool normalise=false, bool binary=false);
+	BLORT_API void sobel(const tgTexture& source, tgTexture& result, tgTexture& mask, float threshold=0.01, bool normalize=false, bool binary=false);
+	BLORT_API void thinning(const tgTexture& source, tgTexture& result);
+	BLORT_API void thinning(const tgTexture& source, tgTexture& result, tgTexture& mask);
+	BLORT_API void spreading(const tgTexture& source, tgTexture& result);
+	BLORT_API void render(const tgTexture& tex);
 	
 	// average computations
-	void avgActivate();
-	void avgGet(float *avg, int lvl=0);
-	void avgDeactivate();
+	BLORT_API void avgActivate();
+	BLORT_API void avgGet(float *avg, int lvl=0);
+	BLORT_API void avgDeactivate();
 	inline int avgGetResolution(){ return fbo_res; }
 };
 

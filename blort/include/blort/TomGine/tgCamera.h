@@ -16,7 +16,9 @@
 #include <blort/TomGine/tgFrustum.h>
 #include <blort/TomGine/tgMathlib.h>
 #include <blort/TomGine/tgPose.h>
+#ifndef WIN32
 #include <sensor_msgs/CameraInfo.h>
+#endif
 
 #define GL_ORTHO 0
 #define GL_PERSPECTIVE 1
@@ -48,12 +50,14 @@ private:
 	tgFrustum m_frustum;
 	
 public:
-	tgCamera();
+	BLORT_API tgCamera();
 	
 	struct Parameter{
-		Parameter();
+		BLORT_API Parameter();
+#ifndef WIN32
                 Parameter(const sensor_msgs::CameraInfo& cam_info);
-                void setPose(const TomGine::tgPose& camPose);
+#endif
+                BLORT_API void setPose(const TomGine::tgPose& camPose);
 		// image dimension
 		unsigned width;
 		unsigned height;
@@ -77,7 +81,7 @@ public:
 		float zNear;
 		float zFar;
 		
-		void print(){
+		BLORT_API void print(){
 			printf("width = %u height = %u\n", width, height);
 			printf("fx = %f fy = %f\n", fx, fy);
 			printf("cx = %f cy = %f\n", cx, cy);
@@ -91,81 +95,81 @@ public:
 		}
 	};
 	
-	void Load(tgCamera::Parameter camPar);
+	BLORT_API void Load(tgCamera::Parameter camPar);
 	
 	// Define tgCamera
-	void Set(	float posx,  float posy,  float posz,
+	BLORT_API void Set(	float posx,  float posy,  float posz,
 				float viewx, float viewy, float viewz,
 				float upx,   float upy,   float upz,
 				float fovy=45.0f, unsigned width=800, unsigned height=600,
 				float zNear=0.1f, float zFar=100.0f,
 				unsigned short projection=GL_PERSPECTIVE );
-	void SetExtrinsic(float* M);
-	void SetIntrinsic(float* M);
-	void SetIntrinsic(float fovy, unsigned width, unsigned height, float zNear, float zFar, unsigned short projection);
-	void SetViewport(unsigned w, unsigned h);
-	void SetZRange(float near, float far);
-	void SetPerspective(){m_projection=GL_PERSPECTIVE;}
-	void SetOrtho(){m_projection=GL_ORTHO;}
-	void SetPos(float x, float y, float z){ m_vPos.x=x; m_vPos.y=y; m_vPos.z=z; }
+	BLORT_API void SetExtrinsic(float* M);
+	BLORT_API void SetIntrinsic(float* M);
+	BLORT_API void SetIntrinsic(float fovy, unsigned width, unsigned height, float zNear, float zFar, unsigned short projection);
+	BLORT_API void SetViewport(unsigned w, unsigned h);
+	BLORT_API void SetZRange(float near, float far);
+	BLORT_API void SetPerspective(){m_projection=GL_PERSPECTIVE;}
+	BLORT_API void SetOrtho(){m_projection=GL_ORTHO;}
+	BLORT_API void SetPos(float x, float y, float z){ m_vPos.x=x; m_vPos.y=y; m_vPos.z=z; }
 	
-	vec2 ToImageSpace(const vec3 &world_space);
+	BLORT_API vec2 ToImageSpace(const vec3 &world_space);
 	
-	void Activate();
-	void Print();
+	BLORT_API void Activate();
+	BLORT_API void Print();
 	
-	void pvu2fsu();
-	void fsu2pvu();
-	void fsu2extrinsic();
-	void extrinsic2fsu();
-	void fwh2intrinsic();
+	BLORT_API void pvu2fsu();
+	BLORT_API void fsu2pvu();
+	BLORT_API void fsu2extrinsic();
+	BLORT_API void extrinsic2fsu();
+	BLORT_API void fwh2intrinsic();
 	
 	// Gets
-	TomGine::tgPose GetPose();
+	BLORT_API TomGine::tgPose GetPose();
 
-	tgVector3 GetF(){return f;}
-	tgVector3 GetS(){return s;}
-	tgVector3 GetU(){return u;}
+	BLORT_API tgVector3 GetF(){return f;}
+	BLORT_API tgVector3 GetS(){return s;}
+	BLORT_API tgVector3 GetU(){return u;}
 	
-	tgVector3 GetPos(){return m_vPos;}
-	tgVector3 GetView(){return m_vView;}
-	tgVector3 GetUp(){return m_vUp;}
+	BLORT_API tgVector3 GetPos(){return m_vPos;}
+	BLORT_API tgVector3 GetView(){return m_vView;}
+	BLORT_API tgVector3 GetUp(){return m_vUp;}
 	
-	float GetZNear(){ return m_zNear; }
-	float GetZFar(){ return m_zFar; }
-	unsigned GetWidth(){ return m_width; }
-	unsigned GetHeight(){return m_height; }
+	BLORT_API float GetZNear(){ return m_zNear; }
+	BLORT_API float GetZFar(){ return m_zFar; }
+	BLORT_API unsigned GetWidth(){ return m_width; }
+	BLORT_API unsigned GetHeight(){return m_height; }
 	
-	float GetFOVY(){ return m_fovy; }
-	unsigned short GetProjection(){ return m_projection; }
-	mat4 GetIntrinsic(){ return m_intrinsic; }
-	mat4 GetExtrinsic(){ return m_extrinsic; }
+	BLORT_API float GetFOVY(){ return m_fovy; }
+	BLORT_API unsigned short GetProjection(){ return m_projection; }
+	BLORT_API mat4 GetIntrinsic(){ return m_intrinsic; }
+	BLORT_API mat4 GetExtrinsic(){ return m_extrinsic; }
 	
-	tgFrustum* GetFrustum(){ return &m_frustum; }
+	BLORT_API tgFrustum* GetFrustum(){ return &m_frustum; }
 
 	// Translations
-	void Translate(tgVector3 v);
-	void Translate(float x, float y, float z, float fWay);
-	void TranslateF(float fWay);
-	void TranslateS(float fWay);
-	void TranslateU(float fWay);
+	BLORT_API void Translate(tgVector3 v);
+	BLORT_API void Translate(float x, float y, float z, float fWay);
+	BLORT_API void TranslateF(float fWay);
+	BLORT_API void TranslateS(float fWay);
+	BLORT_API void TranslateU(float fWay);
 	
 	// Rotations
-	void Rotate(float x, float y, float z, float fAngle);
-	void RotateF(float fAngle);
-	void RotateS(float fAngle);
-	void RotateU(float fAngle);
+	BLORT_API void Rotate(float x, float y, float z, float fAngle);
+	BLORT_API void RotateF(float fAngle);
+	BLORT_API void RotateS(float fAngle);
+	BLORT_API void RotateU(float fAngle);
 	
-	void RotateX(float fAngle);
-	void RotateY(float fAngle);
-	void RotateZ(float fAngle);
+	BLORT_API void RotateX(float fAngle);
+	BLORT_API void RotateY(float fAngle);
+	BLORT_API void RotateZ(float fAngle);
 	
-	void Orbit(tgVector3 vPoint, tgVector3 vAxis, float fAngle);
+	BLORT_API void Orbit(tgVector3 vPoint, tgVector3 vAxis, float fAngle);
 	
 	// Movement
-	void ApplyTransform();
+	BLORT_API void ApplyTransform();
 	
-	void DrawFrustum(){ m_frustum.DrawFrustum(); }
+	BLORT_API void DrawFrustum(){ m_frustum.DrawFrustum(); }
 
 };
 

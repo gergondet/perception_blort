@@ -1751,6 +1751,7 @@ char **get_words(FILE *fp, int *nwords, char **orig_line)
   static char str[BIG_STRING];
   static char str_copy[BIG_STRING];
   char **words;
+  char** words_backup;
   int max_words = 10;
   int num_words = 0;
   char *ptr,*ptr2;
@@ -1805,7 +1806,7 @@ char **get_words(FILE *fp, int *nwords, char **orig_line)
       //Jordi: why the first realloc is necessary?? It is called with the same arguments
       //than the second!!
       //words = (char **) realloc (words, sizeof (char *) * max_words);
-      char** words_backup = words;
+      words_backup = words;
       words = (char **) realloc (words, sizeof (char *) * max_words);
       if(words == NULL)
       {
@@ -2166,9 +2167,9 @@ void get_binary_item(
 {
   char c[8];
   void *ptr;
+  size_t size = 0;
 
   ptr = (void *) c;
-  size_t size = 0;
 
   switch (type) {
     case PLY_CHAR:

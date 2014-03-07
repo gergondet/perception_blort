@@ -22,27 +22,27 @@ public:
 	vec3 t;
 	tgQuaternion q;
 	
-	tgPose operator*(const tgPose& p) const;
-	vec3 operator*(const vec3& t) const;
-	tgPose operator+(const tgPose &p) const;
-	tgPose operator-(const tgPose &p) const;
-	tgPose Transpose() const;
+	BLORT_API tgPose operator*(const tgPose& p) const;
+	BLORT_API vec3 operator*(const vec3& t) const;
+	BLORT_API tgPose operator+(const tgPose &p) const;
+	BLORT_API tgPose operator-(const tgPose &p) const;
+	BLORT_API tgPose Transpose() const;
 	
-	void PrintHeader() const;
-	void Print() const;
+	BLORT_API void PrintHeader() const;
+	BLORT_API void Print() const;
 
-	void Activate() const;	
-	void Deactivate() const;
+	BLORT_API void Activate() const;	
+	BLORT_API void Deactivate() const;
 	
-	void SetPose(mat3 r, vec3 p);	
-	void GetPose(mat3 &r, vec3 &p) const;
+	BLORT_API void SetPose(mat3 r, vec3 p);	
+	BLORT_API void GetPose(mat3 &r, vec3 &p) const;
 	
-	void Rotate(float x, float y, float z);	
-	void Rotate(vec3 r);
-	void RotateAxis(vec3 rot);
-	void RotateEuler(vec3 rot);
-	void Translate(float x, float y, float z);	
-	void Translate(vec3 t);	
+	BLORT_API void Rotate(float x, float y, float z);	
+	BLORT_API void Rotate(vec3 r);
+	BLORT_API void RotateAxis(vec3 rot);
+	BLORT_API void RotateEuler(vec3 rot);
+	BLORT_API void Translate(float x, float y, float z);	
+	BLORT_API void Translate(vec3 t);	
 };
 
 } // namespace TomGine

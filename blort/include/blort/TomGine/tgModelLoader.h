@@ -30,17 +30,17 @@ private:
 	bool propertyIsInList(PlyProperty* prop, PlyProperty* list, int n, int* index);
 
 public:
-	tgModelLoader();
-	~tgModelLoader();
+	BLORT_API tgModelLoader();
+	BLORT_API ~tgModelLoader();
 	
 	/** @brief Loads PLY (Polygon File Format, Stanford Triangle Format) 
 	*		@param Model Storage for model
 	*		@param filename path and filename of file to load
 	*		@return true on success, false on failure
 	*/
-	bool LoadPly(tgModel &model, const char* filename);
+	BLORT_API bool LoadPly(tgModel &model, const char* filename);
 	
-	bool SavePly(tgModel &model, const char* filename);
+	BLORT_API bool SavePly(tgModel &model, const char* filename);
 	   
 };
 

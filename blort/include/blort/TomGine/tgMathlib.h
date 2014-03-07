@@ -23,6 +23,7 @@
 #include <math.h>
 #include <stdlib.h>
 #include <ostream>
+#include <blort/api.h>
 
 #ifndef PI
 #define PI 3.14159265358979323846f

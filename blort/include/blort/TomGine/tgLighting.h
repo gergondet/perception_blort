@@ -39,15 +39,15 @@ private:
 	vec3 lightDir;
 
 public:
-	void ApplyLight(tgLight light, int index=0);
-	void Activate();
-	void Deactivate();
+	BLORT_API void ApplyLight(tgLight light, int index=0);
+	BLORT_API void Activate();
+	BLORT_API void Deactivate();
 	
-	void SetLightPos(vec3 v){ lightPos = v; }
-	void SetLightDir(vec3 v){ lightDir = v; }
+	BLORT_API void SetLightPos(vec3 v){ lightPos = v; }
+	BLORT_API void SetLightDir(vec3 v){ lightDir = v; }
 	
-	void SetLightPos(float x, float y, float z){ lightPos = vec3(x,y,z); }
-	void SetLightDir(float x, float y, float z){ lightDir = vec3(x,y,z); }
+	BLORT_API void SetLightPos(float x, float y, float z){ lightPos = vec3(x,y,z); }
+	BLORT_API void SetLightDir(float x, float y, float z){ lightDir = vec3(x,y,z); }
 };
 
 } // namespace TomGine

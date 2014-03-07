@@ -24,22 +24,22 @@ private:
 	int m_height;
 
 public:
-	tgTexture();
-	~tgTexture();
+	BLORT_API tgTexture();
+	BLORT_API ~tgTexture();
 	
-	bool Load(void* image_data, int width, int height, GLenum format=GL_RGB, GLenum internal=GL_UNSIGNED_BYTE);
-	bool Load(const char* filename);
-	bool Save(const char* filename, bool overwrite=true);
-	bool GetImageData(unsigned char* image_data);
+	BLORT_API bool Load(void* image_data, int width, int height, GLenum format=GL_RGB, GLenum internal=GL_UNSIGNED_BYTE);
+	BLORT_API bool Load(const char* filename);
+	BLORT_API bool Save(const char* filename, bool overwrite=true);
+	BLORT_API bool GetImageData(unsigned char* image_data);
 	
-	void Bind(int stage=0) const;
+	BLORT_API void Bind(int stage=0) const;
 
-	void CopyTexImage2D(int width, int height);
-	void CopyTexImage2D(int x, int y, int width, int height);
+	BLORT_API void CopyTexImage2D(int width, int height);
+	BLORT_API void CopyTexImage2D(int x, int y, int width, int height);
 	
-	inline GLuint GetTextureID(){ return m_texture_id; }
-	inline int GetWidth() const{ return m_width; }
-	inline int GetHeight() const{ return m_height; }
+	BLORT_API inline GLuint GetTextureID(){ return m_texture_id; }
+	BLORT_API inline int GetWidth() const{ return m_width; }
+	BLORT_API inline int GetHeight() const{ return m_height; }
 	
 };
 

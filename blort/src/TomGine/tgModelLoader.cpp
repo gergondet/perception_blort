@@ -1,7 +1,9 @@
 
 
 #include <stdexcept>
+#ifndef WIN32
 #include <wordexp.h>
+#endif
 #include <sstream>
 
 #include <blort/TomGine/tgModelLoader.h>
@@ -11,6 +13,7 @@ using namespace std;
 
 
 std::string expandName ( const std::string &fileString ) {
+#ifndef WIN32
   std::stringstream ss;
     wordexp_t p;
     char** w;
@@ -21,6 +24,9 @@ std::string expandName ( const std::string &fileString ) {
     }
     wordfree( &p );
     return ss.str();
+#else
+    return fileString;
+#endif
 }
 
 

@@ -6,6 +6,7 @@
 #include <GL/glew.h>
 #include <GL/gl.h>
 #include <GL/glu.h>
+#include <algorithm>
 #else
 #include <GL/gl.h>
 #include <GL/glu.h>
@@ -170,8 +171,11 @@ void tgPlot2D::plot(const std::vector<float> &x, const std::vector<float> &y) co
 
     if(x.empty() || y.empty())
         return;
-
+#ifdef WIN32
+    unsigned m = min(x.size(), y.size());
+#else
     unsigned m = std::min(x.size(), y.size());
+#endif
 
     glBegin(GL_LINE_STRIP);
     for(unsigned i=0; i<m; i++){

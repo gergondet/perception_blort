@@ -9,6 +9,7 @@
 #ifndef _GL_WINDOW_EVENT_H_
 #define _GL_WINDOW_EVENT_H_
 
+#include <blort/api.h>
 #include <blort/GLWindow/GLInput.h>
 
 namespace blortGLWindow{

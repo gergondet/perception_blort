@@ -3,6 +3,8 @@
 #ifndef _HEADERS_H_
 #define _HEADERS_H_
 
+#include <blort/api.h>
+
 #ifdef WIN32
 #ifndef WIN32_LEAN_AND_MEAN
 #define WIN32_LEAN_AND_MEAN

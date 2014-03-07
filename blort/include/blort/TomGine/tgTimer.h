@@ -9,6 +9,8 @@
 #ifndef TG_TIMER
 #define TG_TIMER
 
+#include <blort/api.h>
+
 #ifdef _WIN32
 	#include <windows.h>
 #else
@@ -38,14 +40,14 @@ private:
 	double m_fTime;				// Time between two Update calls
 
 public:
-	tgTimer(void);
-	~tgTimer(void);
+	BLORT_API tgTimer(void);
+	BLORT_API ~tgTimer(void);
 	
-	void	Reset();
-	double	Update();
+	BLORT_API void	Reset();
+	BLORT_API double	Update();
 	
-	double	GetFrameTime(){ return m_fTime;}
-	double	GetApplicationTime(){ return m_fAppTime;}
+	BLORT_API double	GetFrameTime(){ return m_fTime;}
+	BLORT_API double	GetApplicationTime(){ return m_fAppTime;}
 };
 
 } // namespace TomGine

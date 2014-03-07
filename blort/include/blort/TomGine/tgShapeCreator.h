@@ -12,6 +12,7 @@
 
 #include <vector>
 
+#include <blort/api.h>
 #include <blort/TomGine/tgModel.h>
 
 #define TETRAHEDRON 0
@@ -40,16 +41,16 @@ private:
 	void subdivide();
 
 public:
-	tgShapeCreator();
+	BLORT_API tgShapeCreator();
  	
- 	void CreateSphere(tgModel& model, float radius, int subdevisions, int method=0);
- 	void CreateBox(tgModel& model, float x, float y, float z);
- 	void CreateCylinder(tgModel &model, float radius, float height, int slices, int stacks, bool closed);
- 	void CreateCone(tgModel &model, float radius, float height, int slices, int stacks, bool closed);
+ 	BLORT_API void CreateSphere(tgModel& model, float radius, int subdevisions, int method=0);
+ 	BLORT_API void CreateBox(tgModel& model, float x, float y, float z);
+ 	BLORT_API void CreateCylinder(tgModel &model, float radius, float height, int slices, int stacks, bool closed);
+ 	BLORT_API void CreateCone(tgModel &model, float radius, float height, int slices, int stacks, bool closed);
  	
- 	void CreateConvexHull(tgModel &model, std::vector<vec3> points);
+ 	BLORT_API void CreateConvexHull(tgModel &model, std::vector<vec3> points);
  	
- 	void TriangulatePolygon(tgModel& model, std::vector<vec3> points);
+ 	BLORT_API void TriangulatePolygon(tgModel& model, std::vector<vec3> points);
  	
 };
 

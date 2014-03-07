@@ -25,27 +25,27 @@ private:
 	
 public:
 	float x,y,z,w;
-	tgQuaternion();
-	tgQuaternion(float x, float y, float z, float w);
+	BLORT_API tgQuaternion();
+	BLORT_API tgQuaternion(float x, float y, float z, float w);
 	
-	void normalise();
-	tgQuaternion getConjugate() const;
-	tgQuaternion operator+ (const tgQuaternion &q2) const;
-	tgQuaternion operator- (const tgQuaternion &q2) const;
-	tgQuaternion operator* (const tgQuaternion &rq);
-	tgQuaternion operator* (const float f);
+	BLORT_API void normalise();
+	BLORT_API tgQuaternion getConjugate() const;
+	BLORT_API tgQuaternion operator+ (const tgQuaternion &q2) const;
+	BLORT_API tgQuaternion operator- (const tgQuaternion &q2) const;
+	BLORT_API tgQuaternion operator* (const tgQuaternion &rq);
+	BLORT_API tgQuaternion operator* (const float f);
 	
-	vec3 operator* (const vec3 &vec);
+	BLORT_API vec3 operator* (const vec3 &vec);
 	
-	void fromAxis(const vec3 &v, float angle);
-	void fromEuler(float pitch, float yaw, float roll);
-	void fromMatrix(mat3 m);
-	void fromMatrix(mat4 m);
-	mat4 getMatrix4() const;
-	mat3 getMatrix3() const;
-	void getAxisAngle(vec3& axis, float& angle) const;
+	BLORT_API void fromAxis(const vec3 &v, float angle);
+	BLORT_API void fromEuler(float pitch, float yaw, float roll);
+	BLORT_API void fromMatrix(mat3 m);
+	BLORT_API void fromMatrix(mat4 m);
+	BLORT_API mat4 getMatrix4() const;
+	BLORT_API mat3 getMatrix3() const;
+	BLORT_API void getAxisAngle(vec3& axis, float& angle) const;
 	
-	void print() const;
+	BLORT_API void print() const;
 
 };
 

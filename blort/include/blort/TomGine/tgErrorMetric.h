@@ -20,13 +20,13 @@ private:
 public:
 	std::vector<vec3> pointlist;
 	
-	tgErrorMetric(TomGine::tgModel model, unsigned num_points=10000);
+	BLORT_API tgErrorMetric(TomGine::tgModel model, unsigned num_points=10000);
 	
-	vec3 Compare(const TomGine::tgPose &p1, const TomGine::tgPose &p2);
+	BLORT_API vec3 Compare(const TomGine::tgPose &p1, const TomGine::tgPose &p2);
 	
-	void GetPoints(std::vector<vec3> &pl){ pl = pointlist; }
+	BLORT_API void GetPoints(std::vector<vec3> &pl){ pl = pointlist; }
 	
-	inline unsigned GetNumPoints(){ return pointlist.size(); }
+	BLORT_API inline unsigned GetNumPoints(){ return pointlist.size(); }
 	
 };
 

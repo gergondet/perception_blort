@@ -52,36 +52,36 @@ private:
 
 public:
     
-	ImageProcessor();
-	~ImageProcessor();
+	BLORT_API ImageProcessor();
+	BLORT_API ~ImageProcessor();
 
 	// Set functions
-	void setCamOrtho();
-	int getWidth(){ return m_width; }
-	int getHeight(){ return m_height; }
+	BLORT_API void setCamOrtho();
+	BLORT_API int getWidth(){ return m_width; }
+	BLORT_API int getHeight(){ return m_height; }
     
 	// Image Processing functions
-	void flipUpsideDown(Texture* source, Texture* result);
-	void copy(Texture* source, Texture* result);
-	void rectification(Texture* source, Texture* result);
-	void gauss(Texture* source, Texture* result);
-	void sobel(Texture* source, Texture* result, float threshold=0.01, bool normalise=false, bool binary=false);
-	void sobel(Texture* source, Texture* result, Texture* mask, float threshold=0.01, bool normalize=false, bool binary=false);
-	void thinning(Texture* source, Texture* result);
-	void thinning(Texture* source, Texture* result, Texture* mask);
-	void spreading(Texture* source, Texture* result);
-	void render(Texture* tex);
-	void render(Texture*tex, int x, int y, unsigned w, unsigned h);
+	BLORT_API void flipUpsideDown(Texture* source, Texture* result);
+	BLORT_API void copy(Texture* source, Texture* result);
+	BLORT_API void rectification(Texture* source, Texture* result);
+	BLORT_API void gauss(Texture* source, Texture* result);
+	BLORT_API void sobel(Texture* source, Texture* result, float threshold=0.01, bool normalise=false, bool binary=false);
+	BLORT_API void sobel(Texture* source, Texture* result, Texture* mask, float threshold=0.01, bool normalize=false, bool binary=false);
+	BLORT_API void thinning(Texture* source, Texture* result);
+	BLORT_API void thinning(Texture* source, Texture* result, Texture* mask);
+	BLORT_API void spreading(Texture* source, Texture* result);
+	BLORT_API void render(Texture* tex);
+	BLORT_API void render(Texture*tex, int x, int y, unsigned w, unsigned h);
 	
 	// summation
-	GLenum avgInit(int res);
-	void avgActivate();
-	void avgGet(float *avg, int lvl=0);
-	void avgDeactivate();
+	BLORT_API GLenum avgInit(int res);
+	BLORT_API void avgActivate();
+	BLORT_API void avgGet(float *avg, int lvl=0);
+	BLORT_API void avgDeactivate();
 	inline int avgGetResolution(){ return fbo_res; }
 	
 	// Main functions
-	bool init(unsigned w, unsigned h);
+	BLORT_API bool init(unsigned w, unsigned h);
 };
 
 } // namespace Tracking

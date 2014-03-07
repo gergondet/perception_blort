@@ -1,6 +1,10 @@
 
 #include <blort/TomGine/tgError.h>
+#ifndef WIN32
 #include <ros/console.h>
+#else
+#define ROS_ERROR(X,Y) printf(X,Y)
+#endif
 
 GLenum tgCheckError(std::string pre_msg)
 {

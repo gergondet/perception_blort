@@ -9,7 +9,7 @@
 #ifndef _GL_WINDOW_
 #define _GL_WINDOW_
 
-
+#include <blort/api.h>
 #include <blort/GLWindow/GLEvent.h>
 
 #ifdef WIN32
@@ -44,21 +44,21 @@ public:
 	*   @param height Window and OpenGL viewport height in pixel
   *   @param name Caption of the window in the titel bar
   *   @param visible if false the window will not be mapped to the display */
-  GLWindow();
-  GLWindow(unsigned int width, unsigned int height);
-  GLWindow(unsigned int width, unsigned int height, const char* name, bool visible = true);
-  ~GLWindow();
+  BLORT_API GLWindow();
+  BLORT_API GLWindow(unsigned int width, unsigned int height);
+  BLORT_API GLWindow(unsigned int width, unsigned int height, const char* name, bool visible = true);
+  BLORT_API ~GLWindow();
 
   /** @brief Activate window for usage (set focus) */
-  void Activate();
+  BLORT_API void Activate();
 
   /** @brief Update OpenGL GLWindow (Swap Buffers) */
-  void Update();
+  BLORT_API void Update();
 
   /** @brief Query input event 
   *   @return true if there are events in the event que 
   *		@param Event defined in TMGLEvent.h */
-  bool GetEvent(Event &event);
+  BLORT_API bool GetEvent(Event &event);
 
 #ifdef WIN32
   HWND gethWnd() const {return hWnd;}
@@ -86,8 +86,8 @@ protected:
   XWindowAttributes     	gwa;
 #endif
 
-  void init(unsigned int width, unsigned int height, const char* name, bool visible = true);
-  void quit();
+  BLORT_API void init(unsigned int width, unsigned int height, const char* name, bool visible = true);
+  BLORT_API void quit();
   
 };
 

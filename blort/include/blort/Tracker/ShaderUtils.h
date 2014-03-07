@@ -1,18 +1,19 @@
-
 #ifndef __UTILS_H__
 #define __UTILS_H__
 
 #include <stdio.h>
 #include <stdlib.h>
 
+#include <blort/api.h>
+
 namespace Tracking{
 
 /* allocate (and free) aligned memory, align must be power of 2 */
-void *malloc_align(size_t size, int align);
-void free_align(void *ptr);
+BLORT_API void *malloc_align(size_t size, int align);
+BLORT_API void free_align(void *ptr);
 
 /* read entierely a file, returning a 0 terminated string */
-char *read_text_file(const char* file);
+BLORT_API char *read_text_file(const char* file);
 
 /* offset of a membet in a structure */
 #undef OFFSETOF

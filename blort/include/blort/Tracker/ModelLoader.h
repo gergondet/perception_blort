@@ -30,19 +30,19 @@ private:
 	bool propertyIsInList(PlyProperty* prop, PlyProperty* list, int n, int* index);
 
 public:
-	ModelLoader();
-	~ModelLoader();
+	BLORT_API ModelLoader();
+	BLORT_API ~ModelLoader();
 	
 	/** @brief Loads PLY (Polygon File Format, Stanford Triangle Format) 
 	*		@param Model Storage for model
 	*		@param filename path and filename of file to load
 	*		@return true on success, false on failure
 	*/
-	bool LoadPly(TomGine::tgModel &model, const char* filename);
-	bool LoadPly(TrackerModel &model, const char* filename);
+	BLORT_API bool LoadPly(TomGine::tgModel &model, const char* filename);
+	BLORT_API bool LoadPly(TrackerModel &model, const char* filename);
 	
-	bool SavePly(TomGine::tgModel &model, const char* filename);
-	bool SavePly(TrackerModel &model, const char* filename);
+	BLORT_API bool SavePly(TomGine::tgModel &model, const char* filename);
+	BLORT_API bool SavePly(TrackerModel &model, const char* filename);
 	   
 };
 

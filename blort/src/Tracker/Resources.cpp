@@ -1,4 +1,8 @@
+#ifndef WIN32
 #include <ros/console.h>
+#else
+#define ROS_DEBUG(...) printf(__VA_ARGS__)
+#endif
 #include <blort/Tracker/Resources.h>
 
 using namespace Tracking;

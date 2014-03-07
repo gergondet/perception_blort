@@ -41,27 +41,27 @@ public:
 	*	@param w width of label in pixels
 	* @param h height of label in pixels
 	* @param ttf_filename file name of true type font (ttf) to use for text */
-	tgLabel();
-	tgLabel(const char* ttf_filename);
-	~tgLabel();
+	BLORT_API tgLabel();
+	BLORT_API tgLabel(const char* ttf_filename);
+	BLORT_API ~tgLabel();
 	
-	void SetFont(const char* ttf_filename){ m_fontfilename = std::string(ttf_filename); }
-	void SetPose(tgPose pose){ m_pose = pose; }
+	BLORT_API void SetFont(const char* ttf_filename){ m_fontfilename = std::string(ttf_filename); }
+	BLORT_API void SetPose(tgPose pose){ m_pose = pose; }
 	
 	/** @brief adds text to the label, should not be called at framerate, since it creates a texture on the GPU 
 	*/
-	void AddText(const char* text, unsigned size=20);
-	void CreateLabel();
+	BLORT_API void AddText(const char* text, unsigned size=20);
+	BLORT_API void CreateLabel();
 	
 	/** @brief clears the text of the label and destroys texture for it on the GPU
 	*/
-	void Clear();
+	BLORT_API void Clear();
 	
 	/** @brief draws the label at frame rate, should be called after everything else is rendered, since depth-testing is disabled
 	*	
 	*/
-	void Draw() const;
-	const char* c_str(){ if(!m_text.empty()) return m_text[0].c_str(); }
+	BLORT_API void Draw() const;
+	BLORT_API const char* c_str(){ if(!m_text.empty()) return m_text[0].c_str(); }
 	
 };
 

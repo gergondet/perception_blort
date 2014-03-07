@@ -10,6 +10,7 @@
 #define __TEXTURE_H__
 
 #include <blort/Tracker/headers.h>
+#include <blort/api.h>
 #include <opencv2/core/core.hpp>
 
 namespace Tracking{
@@ -26,26 +27,26 @@ private:
 	int m_res_id;
 	
 public:
-	Texture();
-	~Texture();
+	BLORT_API Texture();
+	BLORT_API ~Texture();
 	
-	bool load(unsigned char* image_data, unsigned width, unsigned height, GLenum format=GL_BGR);
-	bool load(const char* filename);
-	bool save(const char* filename);
-	bool getImageData(unsigned char* image_data);
+	BLORT_API bool load(unsigned char* image_data, unsigned width, unsigned height, GLenum format=GL_BGR);
+	BLORT_API bool load(const char* filename);
+	BLORT_API bool save(const char* filename);
+	BLORT_API bool getImageData(unsigned char* image_data);
 	
-	void bind(int stage=0);
-	void copyTexImage2D(unsigned width, unsigned height);		// copy frame buffer pixels to texture
-	void copyTexImage2D(int x, int y, unsigned width, unsigned height);
-	void copyFromTexture(Texture* tex);
-	void copyFromTexture(Texture* tex, int x, int y, unsigned w, unsigned h);
+	BLORT_API void bind(int stage=0);
+	BLORT_API void copyTexImage2D(unsigned width, unsigned height);		// copy frame buffer pixels to texture
+	BLORT_API void copyTexImage2D(int x, int y, unsigned width, unsigned height);
+	BLORT_API void copyFromTexture(Texture* tex);
+	BLORT_API void copyFromTexture(Texture* tex, int x, int y, unsigned w, unsigned h);
 	
 	inline GLuint getTextureID(){ return m_texture_id; }
 	inline unsigned getWidth(){ return m_width; }
 	inline unsigned getHeight(){ return m_height; }
 	inline int getResID(){ return m_res_id; }
 	inline void setResID(int id){ m_res_id = id; }
-        cv::Mat toCvMat();
+    BLORT_API cv::Mat toCvMat();
 	
 	
 };

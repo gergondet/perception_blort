@@ -37,30 +37,30 @@ protected:
 	TomGine::tgFont font;
 	TomGine::tgTimer m_timer;
 	
-	float findmax(const std::vector<float> &x) const;
-	float findmin(const std::vector<float> &x) const;
+	BLORT_API float findmax(const std::vector<float> &x) const;
+	BLORT_API float findmin(const std::vector<float> &x) const;
 	
-	void updateBuffer(float y1, float y2=0.0f, float y3=0.0f, float y4=0.0f);
+	BLORT_API void updateBuffer(float y1, float y2=0.0f, float y3=0.0f, float y4=0.0f);
 	
 
 public:
 
-	tgPlot2D(int x, int y, unsigned w, unsigned h);
-	~tgPlot2D();
+	BLORT_API tgPlot2D(int x, int y, unsigned w, unsigned h);
+	BLORT_API ~tgPlot2D();
 	
-	void axis(float x_min, float x_max, float y_min, float y_max);
+	BLORT_API void axis(float x_min, float x_max, float y_min, float y_max);
 	
-	void setBufferSize(unsigned size){ m_buffer_size = size; }
+	BLORT_API void setBufferSize(unsigned size){ m_buffer_size = size; }
 	
 	
-	virtual void draw();
+	BLORT_API virtual void draw();
 	
-	void plot(const std::vector<float> &x, const std::vector<float> &y) const;
+	BLORT_API void plot(const std::vector<float> &x, const std::vector<float> &y) const;
 	
-	void push(float y1);
-	void push(float y1, float y2);
-	void push(float y1, float y2, float y3);
-	void push(float y1, float y2, float y3, float y4);
+	BLORT_API void push(float y1);
+	BLORT_API void push(float y1, float y2);
+	BLORT_API void push(float y1, float y2, float y3);
+	BLORT_API void push(float y1, float y2, float y3, float y4);
 	
 };
 

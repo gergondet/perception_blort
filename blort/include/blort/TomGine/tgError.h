@@ -5,8 +5,8 @@
 #include <blort/TomGine/headers.h>
 #include <string>
 
-GLenum tgCheckError(std::string pre_msg);
+BLORT_API GLenum tgCheckError(std::string pre_msg);
 
-GLenum tgCheckFBError(GLenum target, std::string pre_msg);
+BLORT_API GLenum tgCheckFBError(GLenum target, std::string pre_msg);
 
 #endif

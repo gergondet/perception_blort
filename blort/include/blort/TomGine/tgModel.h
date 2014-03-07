@@ -62,31 +62,31 @@ public:
 	unsigned	getFaceSize(){ return m_faces.size(); }
 	
 	/** @brief draws triangles and quadrangles given by m_faces */
-	virtual void DrawFaces() const;
+	BLORT_API virtual void DrawFaces() const;
 	
 	/** @brief draws lines given by m_lines */
-	virtual void DrawLines(const vec3 &color=vec3(1,0,0)) const;
+	BLORT_API virtual void DrawLines(const vec3 &color=vec3(1,0,0)) const;
 	
 	/** @brief draws points given by m_points */
-	virtual void DrawPoints(const vec3 &color=vec3(1,0,0)) const;
+	BLORT_API virtual void DrawPoints(const vec3 &color=vec3(1,0,0)) const;
 	
 	/** @brief draws normals of vertices in m_faces */
-	virtual void DrawNormals(float normal_length) const;
+	BLORT_API virtual void DrawNormals(float normal_length) const;
 	
 	/** @brief Compute normals of vertices using cross product of faces */
-	virtual void ComputeNormals();
+	BLORT_API virtual void ComputeNormals();
 	
 	/** @brief computes normals of vertices of m_faces, m_polygons, m_quadstrips */
-	virtual void ComputeFaceNormals();
+	BLORT_API virtual void ComputeFaceNormals();
 	
 	/** @brief computes bounding sphere which contains all vertices*/
-	virtual void ComputeBoundingSphere();
+	BLORT_API virtual void ComputeBoundingSphere();
 	
 	/** @brief clears data of model (m_vertices and m_faces) */
-	virtual void Clear();
+	BLORT_API virtual void Clear();
 	
 	/** @brief Prints infos of model to console */
-	virtual void Print() const;
+	BLORT_API virtual void Print() const;
 	
 };
 

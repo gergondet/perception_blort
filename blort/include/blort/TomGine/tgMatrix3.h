@@ -29,20 +29,20 @@ private:
 public:
 	float m[9];
 		
-	tgMatrix3();
-	tgMatrix3(const tgMatrix3 &m);
-	tgMatrix3(tgVector3 x, tgVector3 y, tgVector3 z);
-	tgMatrix3(float m0, float m1, float m2,
+	BLORT_API tgMatrix3();
+	BLORT_API tgMatrix3(const tgMatrix3 &m);
+	BLORT_API tgMatrix3(tgVector3 x, tgVector3 y, tgVector3 z);
+	BLORT_API tgMatrix3(float m0, float m1, float m2,
 						float m3, float m4, float m5,
 						float m6, float m7, float m8);
 
-	tgMatrix3 operator+(tgMatrix3 v);
-	tgMatrix3 operator-(tgMatrix3 v);
-	tgMatrix3 operator*(tgMatrix3 v);
-	tgMatrix3 operator*(float m);
-	tgVector3 operator*(tgVector3 v);
+	BLORT_API tgMatrix3 operator+(tgMatrix3 v);
+	BLORT_API tgMatrix3 operator-(tgMatrix3 v);
+	BLORT_API tgMatrix3 operator*(tgMatrix3 v);
+	BLORT_API tgMatrix3 operator*(float m);
+	BLORT_API tgVector3 operator*(tgVector3 v);
 	
-	void transpose();
+	BLORT_API void transpose();
 };
 
 } // namespace TomGine

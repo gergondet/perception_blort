@@ -15,6 +15,8 @@
 #include <FTGL/ftgl.h>
 #endif
 
+#include <blort/api.h>
+
 namespace TomGine{
 
 class tgFont
@@ -24,11 +26,11 @@ private:
 	FTFont* m_font;
 #endif
 public:
-	tgFont();
-	~tgFont();
+	BLORT_API tgFont();
+	BLORT_API ~tgFont();
 	
-	void Print(const char* text, int size, int pos_x, int pos_y) const;
-	void Print(const char* text, int size, int pos_x, int pos_y, float x, float y, float z, float a=1) const;
+	BLORT_API void Print(const char* text, int size, int pos_x, int pos_y) const;
+	BLORT_API void Print(const char* text, int size, int pos_x, int pos_y, float x, float y, float z, float a=1) const;
 
 };
 

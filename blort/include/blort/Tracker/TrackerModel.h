@@ -29,21 +29,21 @@ private:
 	TrackerModel& operator=(const TomGine::tgModel& m);		// no implementation (should not be used)
 
 public:
-	TrackerModel();
-	TrackerModel(const TomGine::tgModel& m);
-	~TrackerModel();
+	BLORT_API TrackerModel();
+	BLORT_API TrackerModel(const TomGine::tgModel& m);
+	BLORT_API ~TrackerModel();
 	
-	TrackerModel& operator=(const TrackerModel& m);
+	BLORT_API TrackerModel& operator=(const TrackerModel& m);
 	
-	void releasePassList();
+	BLORT_API void releasePassList();
 	
 	struct Pass {												// Renderpass
 		std::vector<unsigned> f;								// Faces to draw with this pass
 		mat4 modelviewprojection;					// Modelview and projection matrix for texCoords
 		float x,y,w,h;										// Bounding box of SubTexture
 		Texture* texture;									// Texture to use
-		Pass(){ texture = new(Texture); glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE); }
-		~Pass(){ delete(texture);}
+		BLORT_API Pass(){ texture = new(Texture); glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE); }
+		BLORT_API ~Pass(){ delete(texture);}
 	};
 	
 	typedef std::vector<Pass*>	PassList;
@@ -57,29 +57,29 @@ public:
 	bool m_textured;
 	
 	// computes, updates
-	void computeEdges();
-	void computeBoundingSphere();
-	void Update();
+	BLORT_API void computeEdges();
+	BLORT_API void computeBoundingSphere();
+	BLORT_API void Update();
 	
 	// draws
-	virtual void Print() const;
-	virtual void drawNormals();
-	virtual void drawFaces(bool colorful=false);
-	void drawFace(int i);
-	void drawEdges();
-	void drawTexturedFaces();
-	void drawUntexturedFaces();
-	void drawPass(bool colorful=false);
-	void drawCoordinates();
+	BLORT_API virtual void Print() const;
+	BLORT_API virtual void drawNormals();
+	BLORT_API virtual void drawFaces(bool colorful=false);
+	BLORT_API void drawFace(int i);
+	BLORT_API void drawEdges();
+	BLORT_API void drawTexturedFaces();
+	BLORT_API void drawUntexturedFaces();
+	BLORT_API void drawPass(bool colorful=false);
+	BLORT_API void drawCoordinates();
 	
 	
-	std::vector<unsigned> getFaceUpdateList(TomGine::tgPose& p_max, vec3 view, float minTexGrabAngle=3.0*PI/4.0, bool use_num_pixels=true);
+	BLORT_API std::vector<unsigned> getFaceUpdateList(TomGine::tgPose& p_max, vec3 view, float minTexGrabAngle=3.0*PI/4.0, bool use_num_pixels=true);
 	
-	void getBoundingBox2D( int width, int height, TomGine::tgPose& p_max, TomGine::tgCamera* m_cam,
+	BLORT_API void getBoundingBox2D( int width, int height, TomGine::tgPose& p_max, TomGine::tgCamera* m_cam,
 							int &minX, int &maxX, int &minY, int &maxY );
 	
 	/** @brief capture texture from image */
-	void textureFromImage(	Texture* image,
+	BLORT_API void textureFromImage(	Texture* image,
 							int width, int height,
 							TomGine::tgPose& p_max,
 							vec3 view,
@@ -88,28 +88,28 @@ public:
 							std::vector<TomGine::tgVertex> &vertices,
 							TomGine::tgCamera* m_cam);
 	
-	void useTexCoords(bool useTC);
-	void unwarpTexturesBox_hacky(const char* name);
+	BLORT_API void useTexCoords(bool useTC);
+	BLORT_API void unwarpTexturesBox_hacky(const char* name);
 
 		// gets
-	bool 			getTextured(){ return m_textured; }
-	Texture* 	getTexture(){ return m_texture; }
-	Texture* 	getOriginalTexture(){ return m_tex_original; }
-	float			getBoundingSphereRadius(){ return m_boundingSphereRadius; }
+	BLORT_API bool 			getTextured(){ return m_textured; }
+	BLORT_API Texture* 	getTexture(){ return m_texture; }
+	BLORT_API Texture* 	getOriginalTexture(){ return m_tex_original; }
+	BLORT_API float			getBoundingSphereRadius(){ return m_boundingSphereRadius; }
 	
 	// sets
-	void setBFC(bool bfc){ m_bfc = bfc; }
-	void setTexture(Texture* tex){ m_texture = tex; }
-	void setOriginalTexture(Texture* tex){ m_tex_original = tex; }
-	void restoreTexture(){ m_texture=m_tex_original; }
+	BLORT_API void setBFC(bool bfc){ m_bfc = bfc; }
+	BLORT_API void setTexture(Texture* tex){ m_texture = tex; }
+	BLORT_API void setOriginalTexture(Texture* tex){ m_tex_original = tex; }
+	BLORT_API void restoreTexture(){ m_texture=m_tex_original; }
 	
 		// generate display lists
-	void genListTexturedFaces();
-	void genListUntexturedFaces();
-	void genListPass(bool colorful=false);
-	void genListFaces(bool colorful=false);
-	void genListEdges();
-	void genListNormals(float normal_length);
+	BLORT_API void genListTexturedFaces();
+	BLORT_API void genListUntexturedFaces();
+	BLORT_API void genListPass(bool colorful=false);
+	BLORT_API void genListFaces(bool colorful=false);
+	BLORT_API void genListEdges();
+	BLORT_API void genListNormals(float normal_length);
 	
 protected:
 	GLint m_dlTexturedFaces;
@@ -125,8 +125,8 @@ protected:
 	float m_boundingSphereRadius;
 
 	// Functions
-	bool isRedundant(TomGine::tgLine* e1);
-	void UpdateDisplayLists();
+	BLORT_API bool isRedundant(TomGine::tgLine* e1);
+	BLORT_API void UpdateDisplayLists();
 };
 
 } // namespace Tracking

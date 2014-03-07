@@ -30,20 +30,20 @@ public:
 	tgMaterial 		m_material;
 	tgModel*		m_bsmodel;	// bounding sphere
 	
-	tgRenderModel();
-	tgRenderModel(const tgModel& model);
-	~tgRenderModel();
+	BLORT_API tgRenderModel();
+	BLORT_API tgRenderModel(const tgModel& model);
+	BLORT_API ~tgRenderModel();
 	
-	void ApplyMaterial();
-	void ApplyColor();
+	BLORT_API void ApplyMaterial();
+	BLORT_API void ApplyColor();
 	
-	virtual void DrawFaces();
-	void DrawFaces(bool lighting);
+	BLORT_API virtual void DrawFaces();
+	BLORT_API void DrawFaces(bool lighting);
 // 	virtual void DrawPolygons();
-	virtual void DrawNormals(float normal_length);
+	BLORT_API virtual void DrawNormals(float normal_length);
 	
 	/** @brief draws bounding sphere of model */
-	virtual void DrawBoundingSphere();
+	BLORT_API virtual void DrawBoundingSphere();
 };
 
 } // namespace TomGine

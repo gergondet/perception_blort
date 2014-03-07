@@ -36,45 +36,45 @@ private:
     GLhandleARB vertex;
     GLhandleARB program;
 public:
-    tgShader(	const char *vertex_file = NULL,
+    BLORT_API tgShader(	const char *vertex_file = NULL,
     		const char *fragment_file = NULL,
     		const char *header = NULL);
-    ~tgShader();
+    BLORT_API ~tgShader();
 
-    void bind();
-    void unbind();
-    void dumpVars();
-    void printInfoLog(GLhandleARB obj, const char *msg, ...);
-    bool getStatus();
+    BLORT_API void bind();
+    BLORT_API void unbind();
+    BLORT_API void dumpVars();
+    BLORT_API void printInfoLog(GLhandleARB obj, const char *msg, ...);
+    BLORT_API bool getStatus();
 
-    GLuint getAttribLoc(const char*);
-    GLint  getUniformLoc(const char*);
-    void setUniform(const char*,int);
-    void setUniform(const char*,unsigned);
-    void setUniform(const char*,int,const int*);
-    void setUniform(const char*,float);
-    void setUniform(const char*,int,const float*);
-    void setUniform(const char*,vec2);
-    void setUniform(const char* var,int n,vec2* f);
-    void setUniform(const char*,vec3);
-    void setUniform(const char* var,int n,vec3* f);
-    void setUniform(const char*,vec4);
-    void setUniform(const char* var,int n,vec4* f);
-    void setUniform(const char*,mat3,bool transpose=false);
-    void setUniform(const char* var,int n,mat3* f,bool transpose);
-    void setUniform(const char*,mat4,bool transpose=false);
-    void setUniform(const char* var,int n,mat4* f,bool transpose);
+    BLORT_API GLuint getAttribLoc(const char*);
+    BLORT_API GLint  getUniformLoc(const char*);
+    BLORT_API void setUniform(const char*,int);
+    BLORT_API void setUniform(const char*,unsigned);
+    BLORT_API void setUniform(const char*,int,const int*);
+    BLORT_API void setUniform(const char*,float);
+    BLORT_API void setUniform(const char*,int,const float*);
+    BLORT_API void setUniform(const char*,vec2);
+    BLORT_API void setUniform(const char* var,int n,vec2* f);
+    BLORT_API void setUniform(const char*,vec3);
+    BLORT_API void setUniform(const char* var,int n,vec3* f);
+    BLORT_API void setUniform(const char*,vec4);
+    BLORT_API void setUniform(const char* var,int n,vec4* f);
+    BLORT_API void setUniform(const char*,mat3,bool transpose=false);
+    BLORT_API void setUniform(const char* var,int n,mat3* f,bool transpose);
+    BLORT_API void setUniform(const char*,mat4,bool transpose=false);
+    BLORT_API void setUniform(const char* var,int n,mat4* f,bool transpose);
 
 
 };
 
 
 /* allocate (and free) aligned memory, align must be power of 2 */
-void *malloc_align(size_t size, int align);
-void free_align(void *ptr);
+BLORT_API void *malloc_align(size_t size, int align);
+BLORT_API void free_align(void *ptr);
 
 /* read entierely a file, returning a 0 terminated string */
-char *read_text_file(const char* file);
+BLORT_API char *read_text_file(const char* file);
 
 /* offset of a membet in a structure */
 #undef OFFSETOF

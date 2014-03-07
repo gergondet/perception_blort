@@ -25,10 +25,10 @@ public:
 	vec4 color;
 	float shininess;
 
-	tgMaterial();
-	void Apply();
-	void Color(float r, float g, float b, float a=1.0f);
-	void Random();
+	BLORT_API tgMaterial();
+	BLORT_API void Apply();
+	BLORT_API void Color(float r, float g, float b, float a=1.0f);
+	BLORT_API void Random();
 };
 
 

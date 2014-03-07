@@ -30,6 +30,7 @@ tgCamera::Parameter::Parameter(){
     zFar = 4.0f;
 }
 
+#ifndef WIN32
 tgCamera::Parameter::Parameter(const sensor_msgs::CameraInfo& cam_info)
 {
     width = cam_info.width;
@@ -48,6 +49,7 @@ tgCamera::Parameter::Parameter(const sensor_msgs::CameraInfo& cam_info)
     rot.fromRotVector(vec3(-2.0f,-1.0f,0.5f));
     pos = vec3(0.6f, -0.2f, 0.5f);
 }
+#endif
 
 void tgCamera::Parameter::setPose(const TomGine::tgPose& camPose)
 {

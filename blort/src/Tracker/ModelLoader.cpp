@@ -1,4 +1,10 @@
+#ifndef WIN32
 #include <ros/console.h>
+#else
+#define ROS_DEBUG(...) printf(__VA_ARGS__)
+#define ROS_ERROR(...) printf(__VA_ARGS__)
+#define ROS_INFO(...) printf(__VA_ARGS__)
+#endif
 #include <blort/Tracker/ModelLoader.h>
 #include <stdexcept>
 

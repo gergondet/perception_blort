@@ -14,6 +14,7 @@
 #endif
 
 #include <math.h>
+#include <blort/api.h>
 
 namespace TomGine{
 
@@ -25,37 +26,37 @@ class tgVector3
 public:
 	float x, y, z;
 	
-	tgVector3();
+	BLORT_API tgVector3();
 	//tgVector3(const tgVector3 &v);
-	tgVector3(float all);
-	tgVector3(float x, float y, float z);
+	BLORT_API tgVector3(float all);
+	BLORT_API tgVector3(float x, float y, float z);
 
-	tgVector3 operator=(tgVector3 v);
-	tgVector3 operator+(tgVector3 v);
-	tgVector3 operator-(tgVector3 v);
-	tgVector3 operator*(tgVector3 v);
-	tgVector3 operator*(float m);
-	tgVector3 operator/(float m);
+	BLORT_API tgVector3 operator=(tgVector3 v);
+	BLORT_API tgVector3 operator+(tgVector3 v);
+	BLORT_API tgVector3 operator-(tgVector3 v);
+	BLORT_API tgVector3 operator*(tgVector3 v);
+	BLORT_API tgVector3 operator*(float m);
+	BLORT_API tgVector3 operator/(float m);
 	
-	tgVector3 cross(tgVector3 v);
-	static tgVector3 cross(tgVector3 v1, tgVector3 v2);
-	float dot(tgVector3 v);
-	void normalize();
-	float length();
-	void setLength(float l);
+	BLORT_API tgVector3 cross(tgVector3 v);
+	BLORT_API static tgVector3 cross(tgVector3 v1, tgVector3 v2);
+	BLORT_API float dot(tgVector3 v);
+	BLORT_API void normalize();
+	BLORT_API float length();
+	BLORT_API void setLength(float l);
 
-	void rotateX(float fAngle);
-	void rotateY(float fAngle);
-	void rotateZ(float fAngle);
+	BLORT_API void rotateX(float fAngle);
+	BLORT_API void rotateY(float fAngle);
+	BLORT_API void rotateZ(float fAngle);
 
-	void rotate(float fAngle, tgVector3 vAxis);
+	BLORT_API void rotate(float fAngle, tgVector3 vAxis);
 
 	//void GetRotYZ(float &fAngleY, float &fAngleZ);
 
 };
 
 // tgVector3 funktions
-float Angle(tgVector3 a, tgVector3 b);
+BLORT_API float Angle(tgVector3 a, tgVector3 b);
 
 } // namespace TomGine
 

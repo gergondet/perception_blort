@@ -28,17 +28,17 @@ private:
 
 
 public:
-	tgGUI(unsigned width, unsigned height);
-	~tgGUI();
+	BLORT_API tgGUI(unsigned width, unsigned height);
+	BLORT_API ~tgGUI();
 	
-	bool Update();
+	BLORT_API bool Update();
 	
-	void Activate(){ m_window->Activate(); }
+	BLORT_API void Activate(){ m_window->Activate(); }
 	
 	
-	void GetPlot2D(int x, int y, unsigned w, unsigned h);
+	BLORT_API void GetPlot2D(int x, int y, unsigned w, unsigned h);
 
-	void Screenshot(const char* filename) const;
+	BLORT_API void Screenshot(const char* filename) const;
 
 };
 

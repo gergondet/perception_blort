@@ -1,4 +1,72 @@
 cmake_minimum_required(VERSION 2.4.6)
+
+IF(WIN32)
+
+PROJECT(blort)
+
+include_directories(${CMAKE_SOURCE_DIR}/include)
+include_directories(${CMAKE_INSTALL_PREFIX}/include)
+link_directories(${CMAKE_INSTALL_PREFIX}/lib)
+link_directories(${CMAKE_BINARY_DIR})
+
+add_library(module_glwindow SHARED
+    src/GLWindow/GLXWindowGetEvent.cpp 
+    src/GLWindow/GLXWindow.cpp 
+    src/GLWindow/glxhidingwindow.cpp
+)
+
+target_link_libraries(module_glwindow glu32.lib;OpenGL32.lib;glew32.lib;)
+
+add_library(module_tomgine SHARED
+    src/TomGine/tgMathlib.cpp
+    src/TomGine/tgVector3.cpp 
+    src/TomGine/tgTimer.cpp 
+    src/TomGine/tgTexture.cpp 
+    src/TomGine/tgShapeCreator.cpp 
+    src/TomGine/tgShader.cpp 
+    src/TomGine/tgRenderModel.cpp 
+    src/TomGine/tgQuaternion.cpp 
+    src/TomGine/tgPose.cpp 
+    src/TomGine/tgPlot2D.cpp 
+    src/TomGine/tgModelLoader.cpp 
+    src/TomGine/tgModel.cpp 
+    src/TomGine/tgMatrix3.cpp 
+    src/TomGine/tgMaterial.cpp 
+    src/TomGine/tgLighting.cpp 
+    src/TomGine/tgLabel.cpp 
+    src/TomGine/tgImageProcessor.cpp 
+    src/TomGine/tgGUI.cpp 
+    src/TomGine/tgFrustum.cpp 
+    src/TomGine/tgFont.cpp 
+    src/TomGine/tgErrorMetric.cpp 
+    src/TomGine/tgError.cpp 
+    src/TomGine/tgEngine.cpp 
+    src/TomGine/tgCollission.cpp 
+    src/TomGine/tgCamera.cpp 
+    src/TomGine/ply.c 
+)
+target_link_libraries(module_tomgine module_glwindow.lib;glu32.lib;OpenGL32.lib;glew32.lib;opencv_core248.lib;opencv_highgui248.lib;)
+
+add_library(module_tracker SHARED
+    src/Tracker/ModelLoader.cpp
+    src/Tracker/TrackerModel.cpp 
+    src/Tracker/Texture.cpp 
+    src/Tracker/Shader.cpp
+    src/Tracker/ShaderUtils.cpp
+    src/Tracker/ImageProcessor.cpp 
+    src/Tracker/Resources.cpp
+    src/Tracker/ply.c
+)
+target_link_libraries(module_tracker module_tomgine)
+
+install(TARGETS module_glwindow module_tracker module_tomgine
+    RUNTIME DESTINATION bin
+    LIBRARY DESTINATION lib
+    ARCHIVE DESTINATION lib)
+
+install(DIRECTORY ${CMAKE_SOURCE_DIR}/include/blort DESTINATION include)
+
+ELSE(WIN32)
 include($ENV{ROS_ROOT}/core/rosbuild/rosbuild.cmake)
 
 # Set the build type.  Options are:
@@ -129,4 +197,4 @@ rosbuild_add_library(module_recognizer3d
     src/Recognizer3D/Config.cc 
     src/Recognizer3D/CodebookEntry.cc 
 )
-
+ENDIF(WIN32)

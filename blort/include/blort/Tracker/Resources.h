@@ -46,43 +46,43 @@ private:
 	int				SearchName(NameList* list, const char* filename);
 
 public:
-	~Resources();
-	static Resources* GetInstance(){
+	BLORT_API ~Resources();
+	BLORT_API static Resources* GetInstance(){
 		return Singleton <Resources>::GetInstance ();
 	}
 	
 	// Initialisation
-	IplImage*				InitCapture(const char* file);
-	IplImage* 				InitCapture(float width=640.0, float height=480.0, int camID = CV_CAP_ANY);
-	ImageProcessor*			InitImageProcessor(int width, int height);
+	BLORT_API IplImage*				InitCapture(const char* file);
+	BLORT_API IplImage* 				InitCapture(float width=640.0, float height=480.0, int camID = CV_CAP_ANY);
+	BLORT_API ImageProcessor*			InitImageProcessor(int width, int height);
 
     // Release-functions
-	void ReleaseCapture();
-	void ReleaseImageProcessor();
+	BLORT_API void ReleaseCapture();
+	BLORT_API void ReleaseImageProcessor();
     
     // Set-function
-	void 	SetShaderPath(const char* path){ sprintf(m_shaderPath, "%s", path); }
-	void	ShowLog(bool b){ m_showlog = b; }
+	BLORT_API void 	SetShaderPath(const char* path){ sprintf(m_shaderPath, "%s", path); }
+	BLORT_API void	ShowLog(bool b){ m_showlog = b; }
 
 	// Get-functions
-	IplImage* 			GetNewImage();
-	IplImage* 			GetImage();
-	ImageProcessor* 	GetImageProcessor();
+	BLORT_API IplImage* 			GetNewImage();
+	BLORT_API IplImage* 			GetImage();
+	BLORT_API ImageProcessor* 	GetImageProcessor();
 	
-	Shader*					GetShader(int id);
+	BLORT_API Shader*					GetShader(int id);
 	
 	// Add-functions
-	int		AddShader(	const char* shadername,
+	BLORT_API int		AddShader(	const char* shadername,
 						const char* vertex_file = NULL,
 						const char* fragment_file = NULL,
 						const char* header = NULL);
 	
 	// Release-functions
-	void ReleaseShader();
-	void ReleaseShader(int id);
+	BLORT_API void ReleaseShader();
+	BLORT_API void ReleaseShader(int id);
 	
 	// Search-functions
-	int	SearchShaderName(const char* filename);
+	BLORT_API int	SearchShaderName(const char* filename);
 };
 
 } // namespace Tracking

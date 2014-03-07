@@ -27,10 +27,10 @@ private:
 
 
 public:
-	void ExtractFrustum();
-	bool PointInFrustum( float x, float y, float z );
-	bool SphereInFrustum( float x, float y, float z, float radius );
-	void DrawFrustum();
+	BLORT_API void ExtractFrustum();
+	BLORT_API bool PointInFrustum( float x, float y, float z );
+	BLORT_API bool SphereInFrustum( float x, float y, float z, float radius );
+	BLORT_API void DrawFrustum();
 
 };
 
