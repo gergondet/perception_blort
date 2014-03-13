@@ -19,6 +19,7 @@
   <depend package="tf"/>
   <depend package="dynamic_reconfigure"/>
   <depend package="blort"/>
+  <depend package="blort_ros_msgs"/>
 
 </package>
 
