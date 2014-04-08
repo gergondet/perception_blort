@@ -46,6 +46,7 @@ struct GLWindowImpl
 
   void init(unsigned int width, unsigned int height, const char* name, bool visible)
   {
+#ifdef LINUX
 	GLint att[] = { GLX_RGBA, GLX_DEPTH_SIZE, 24, GLX_DOUBLEBUFFER, None };
 	dpy = XOpenDisplay(NULL);
 
@@ -85,28 +86,35 @@ struct GLWindowImpl
     {
       XUnmapWindow(dpy, glWin);
     }
+#endif // LINUX implementation
   }
 
   void quit()
   {
+#ifdef LINUX
 	glXMakeCurrent(dpy, None, NULL);
 	glXDestroyContext(dpy, glc);
 	XDestroyWindow(dpy, glWin);
 	XCloseDisplay(dpy);
+#endif // LINUX implementation
   }
 
   void Activate()
   {
+#ifdef LINUX
 	glXMakeCurrent(dpy, glWin, glc);
+#endif // LINUX implementation
   }
 
   void Update()
   {
+#ifdef LINUX
 	glXSwapBuffers(dpy, glWin);
+#endif // LINUX implementation
   }
 
   bool GetEvent(Event &event){
-
+#ifdef LINUX
 	if(XPending(dpy)){
 		XEvent xev;
 		
@@ -165,9 +173,11 @@ struct GLWindowImpl
 
 		return true;
 	}
+#endif // LINUX implementation
 	return false;
   }
 
+#ifdef LINUX
   void MapMouse(unsigned int xbutton, Input &input)
   {
   	switch(xbutton)
@@ -444,7 +454,7 @@ struct GLWindowImpl
   			break;
   	}
   }
-
+#endif // LINUX implementation for Mouse/Keyboard mapping
 };
 
 
