@@ -10,7 +10,6 @@ link_directories(${CMAKE_INSTALL_PREFIX}/lib)
 link_directories(${CMAKE_BINARY_DIR})
 
 add_library(module_glwindow SHARED
-    src/GLWindow/GLXWindowGetEvent.cpp 
     src/GLWindow/GLXWindow.cpp 
     src/GLWindow/glxhidingwindow.cpp
 )
@@ -99,7 +98,6 @@ include_directories("${PROJECT_SOURCE_DIR}/src")
 
 
 rosbuild_add_library(module_glwindow
-    src/GLWindow/GLXWindowGetEvent.cpp 
     src/GLWindow/GLXWindow.cpp 
     src/GLWindow/glxhidingwindow.cpp
 )
