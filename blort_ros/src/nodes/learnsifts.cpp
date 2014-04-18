@@ -182,7 +182,7 @@ int main(int argc, char *argv[] )
     // Model for Tracker
     TomGine::tgPose trPose;
     trPose.t = vec3(0.0, 0.1, 0.0);
-    trPose.Rotate(0.0f, 0.0f, 0.5f);    
+    trPose.Rotate(0.0f, 0.0f, 0.5f);
     std::string modelFullPath = pal_blort::addRoot(ply_model, config_root);
     printf("=> Trying to get the object model from file: %s\n", modelFullPath.c_str());
     int modelID = tracker.addModelFromFile(modelFullPath.c_str(), trPose, model_name.c_str(), true);
@@ -213,7 +213,10 @@ int main(int argc, char *argv[] )
     bool quit = false;
     bool translateXY = false;
     bool translateZ = false;
-    bool rotateXZ = false;
+    bool rotateXYZ = false;
+    bool rotateX = false;
+    bool rotateY = false;
+    bool rotateZ = false;
     TranslateStart start;
     while(!quit)
     {
@@ -318,19 +321,40 @@ int main(int argc, char *argv[] )
             }
             if(event.type == blortGLWindow::TMGL_Press)
             {
-                if(event.input == blortGLWindow::TMGL_Button3 && !translateZ && !rotateXZ)
+                if( event.input == blortGLWindow::TMGL_Button3 && ! (translateZ || rotateXYZ) )
                 {
                     translateXY = true;
                     start.x = event.motion.x; start.y = event.motion.y;
                 }
-                if(event.input == blortGLWindow::TMGL_Button2 && !translateXY && !rotateXZ)
+                if( event.input == blortGLWindow::TMGL_Button2 && ! (translateXY || rotateXYZ) )
                 {
                     translateZ = true;
                     start.x = event.motion.x; start.y = event.motion.y;
                 }
-                if(event.input == blortGLWindow::TMGL_Button1 && !translateXY && !translateZ)
+                if( event.input == blortGLWindow::TMGL_x && ! (translateXY || translateZ || rotateXYZ) )
                 {
-                    rotateXZ = true;
+                    std::cout << "Object rotation: (X) axis selected" << std::endl;
+                    rotateX = true;
+                    rotateY = false;
+                    rotateZ = false;
+                }
+                if( event.input == blortGLWindow::TMGL_y && ! (translateXY || translateZ || rotateXYZ) )
+                {
+                    std::cout << "Object rotation: (Y) axis selected" << std::endl;
+                    rotateX = false;
+                    rotateY = true;
+                    rotateZ = false;
+                }
+                if( event.input == blortGLWindow::TMGL_z && ! (translateXY || translateZ || rotateXYZ) )
+                {
+                    std::cout << "Object rotation: (Z) axis selected" << std::endl;
+                    rotateX = false;
+                    rotateY = false;
+                    rotateZ = true;
+                }
+                if( event.input == blortGLWindow::TMGL_Button1 )
+                {
+                    rotateXYZ = true;
                     start.x = event.motion.x; start.y = event.motion.y;
                 }
             }
@@ -346,51 +370,59 @@ int main(int argc, char *argv[] )
                 }
                 if(event.input == blortGLWindow::TMGL_Button1)
                 {
-                    rotateXZ = false;
+                    rotateXYZ = false;
                 }
             }
             if(event.type == blortGLWindow::TMGL_Motion)
             {
                 if(translateXY)
                 {
-                    float translateX = start.x - event.motion.x;
-                    float translateY = start.y - event.motion.y;
-                    trackParams.camPar.pos.x += trackParams.camPar.rot.mat[0]*(translateX)*0.001 + trackParams.camPar.rot.mat[1]*(translateY)*0.001;
-                    trackParams.camPar.pos.y += trackParams.camPar.rot.mat[3]*(translateX)*0.001 + trackParams.camPar.rot.mat[4]*(translateY)*0.001;
-                    trackParams.camPar.pos.z += trackParams.camPar.rot.mat[6]*(translateX)*0.001 + trackParams.camPar.rot.mat[7]*(translateY)*0.001;
+                    float translateX = (start.x - event.motion.x)*0.001;
+                    float translateY = (start.y - event.motion.y)*0.001;
+                    trackParams.camPar.pos.x += trackParams.camPar.rot.mat[0]*translateX + trackParams.camPar.rot.mat[1]*translateY;
+                    trackParams.camPar.pos.y += trackParams.camPar.rot.mat[3]*translateX + trackParams.camPar.rot.mat[4]*translateY;
+                    trackParams.camPar.pos.z += trackParams.camPar.rot.mat[6]*translateX + trackParams.camPar.rot.mat[7]*translateY;
                     start.x = event.motion.x; start.y = event.motion.y;
                     tracker.setCameraParameters(trackParams.camPar);
                 }
                 if(translateZ)
                 {
-                    float translateZ = start.y - event.motion.y;
-                    trackParams.camPar.pos.x += trackParams.camPar.rot.mat[2]*(translateZ)*0.001;
-                    trackParams.camPar.pos.y += trackParams.camPar.rot.mat[5]*(translateZ)*0.001;
-                    trackParams.camPar.pos.z += trackParams.camPar.rot.mat[8]*(translateZ)*0.001;
+                    float translateZ = (start.y - event.motion.y)*0.001;
+                    trackParams.camPar.pos.x += trackParams.camPar.rot.mat[2]*translateZ;
+                    trackParams.camPar.pos.y += trackParams.camPar.rot.mat[5]*translateZ;
+                    trackParams.camPar.pos.z += trackParams.camPar.rot.mat[8]*translateZ;
                     start.x = event.motion.x; start.y = event.motion.y;
                     tracker.setCameraParameters(trackParams.camPar);
                 }
-                if(rotateXZ)
+                if(rotateX && rotateXYZ)
                 {
-                    float thetaX = (-event.motion.y + start.y)*0.01; float cthetaX = cos(thetaX); float sthetaX = sin(thetaX);
-                    float thetaZ = (event.motion.x - start.x)*0.01; float cthetaZ = cos(thetaZ); float sthetaZ = sin(thetaZ);
-                    mat3 mRot;
-                    float x = trackParams.camPar.pos.x;
-                    float y = trackParams.camPar.pos.y;
-                    float z = trackParams.camPar.pos.z;
-                    /* Rotation around Z */
-                    mRot.rotate_z(57.3*thetaZ);
-                    trackParams.camPar.pos.x = x*cthetaZ + y*sthetaZ;
-                    trackParams.camPar.pos.y = -x*sthetaZ + y*cthetaZ;
-                    trackParams.camPar.rot = trackParams.camPar.rot*mRot;
-                    y = trackParams.camPar.pos.y;
-                    /* Rotation around X */
-                    mRot.rotate_x(57.3*thetaX);
-                    trackParams.camPar.pos.y = y*cthetaX + z*sthetaX;
-                    trackParams.camPar.pos.z = -y*sthetaX + z*cthetaX;
-                    trackParams.camPar.rot = trackParams.camPar.rot*mRot;
+                    float thetaX = (-event.motion.x + start.x)*0.01;
+                    TomGine::tgPose nPose;
+                    tracker.getModelPose(modelID, nPose);
+                    nPose.Rotate(thetaX, 0.0f, 0.0f);
+                    tracker.setModelInitialPose(modelID, nPose);
+                    tracker.reset(modelID);
                     start.x = event.motion.x; start.y = event.motion.y;
-                    tracker.setCameraParameters(trackParams.camPar);
+                }
+                if(rotateY && rotateXYZ)
+                {
+                    float thetaY = (-event.motion.x + start.x)*0.01;
+                    TomGine::tgPose nPose;
+                    tracker.getModelPose(modelID, nPose);
+                    nPose.Rotate(0.0f, thetaY, 0.0f);
+                    tracker.setModelInitialPose(modelID, nPose);
+                    tracker.reset(modelID);
+                    start.x = event.motion.x; start.y = event.motion.y;
+                }
+                if(rotateZ && rotateXYZ)
+                {
+                    float thetaZ = (-event.motion.x + start.x)*0.01;
+                    TomGine::tgPose nPose;
+                    tracker.getModelPose(modelID, nPose);
+                    nPose.Rotate(0.0f, 0.0f, thetaZ);
+                    tracker.setModelInitialPose(modelID, nPose);
+                    tracker.reset(modelID);
+                    start.x = event.motion.x; start.y = event.motion.y;
                 }
             }
             event.type = blortGLWindow::TMGL_None;
