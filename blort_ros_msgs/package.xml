@@ -4,7 +4,6 @@
   <description>
     This package defines messages used by BLORT ROS interface
   </description>
-  </description>
   <maintainer email="bencemagyar@pal-robotics.com">Bence Magyar</maintainer>
   <license>BSD</license>
   <author email="bencemagyar@pal-robotics.com">Bence Magyar</author>
