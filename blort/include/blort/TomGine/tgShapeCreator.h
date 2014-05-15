@@ -42,6 +42,7 @@ private:
 
 public:
 	BLORT_API tgShapeCreator();
+    BLORT_API ~tgShapeCreator();
  	
  	BLORT_API void CreateSphere(tgModel& model, float radius, int subdevisions, int method=0);
  	BLORT_API void CreateBox(tgModel& model, float x, float y, float z);

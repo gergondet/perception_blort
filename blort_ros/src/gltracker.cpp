@@ -38,7 +38,7 @@
  * @brief Class of GLTracker which wraps the tracker core of BLORT.
  */
 
-#include "gltracker.h"
+#include <blort_ros/gltracker.h>
 #include <blort/Tracker/utilities.hpp>
 #include <blort/TomGine/tgModelLoader.h>
 #include <sstream>
@@ -75,9 +75,9 @@ GLTracker::GLTracker(const sensor_msgs::CameraInfo camera_info,
     printf(" \n\n ");
 
     // File names
-    pose_cal = pal_blort::addRoot("bin/pose.cal", config_root);
+    pose_cal = pal_blort::addRoot("config/pose.cal", config_root);
     //FIXME: make these ROS parameters or eliminate them and use the content as parameters
-    std::string tracking_ini(pal_blort::addRoot("bin/tracking.ini", config_root));
+    std::string tracking_ini(pal_blort::addRoot("config/tracking.ini", config_root));
 
     std::vector<std::string> ply_models(0), sift_files(0), model_names(0);
     GetPlySiftFilenames(tracking_ini.c_str(), ply_models, sift_files, model_names);

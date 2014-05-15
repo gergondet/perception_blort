@@ -1064,7 +1064,7 @@ void Tracker::loadCalibrationPattern(const char* mdl_file){
         unsigned n=0;
         vec3 p;
         rewind(pfile);
-        int size = fscanf(pfile, "%d", &n);
+        int size = fscanf(pfile, "%u", &n);
         m_calib_points.clear();
         for(unsigned i=0; i<n; i++){
             size = fscanf(pfile, "%f %f %f", &p.x, &p.y, &p.z);
@@ -1156,7 +1156,7 @@ void Tracker::printStatistics(){
     printf("\n\nStatistics: \n");
     
     for(unsigned i=0; i<m_modellist.size(); i++){
-        tgPose pMean =  m_modellist[i]->distribution.getMean();
+        //tgPose pMean =  m_modellist[i]->distribution.getMean();
         printf("	Object %u '%s'\n", i, m_modellist[i]->label.c_str());
         printf("		FPS: %.1f\n", 1.0f/m_ftime);
         printf("		Textured: %d\n", m_modellist[i]->model.m_textured);
@@ -1166,7 +1166,7 @@ void Tracker::printStatistics(){
         printf("		Variance: %f \n", m_modellist[i]->distribution.getVariancePt() );
         printf("		Confidence: %f \n", m_modellist[i]->pose.c);
         printf("		Weight: %f \n", m_modellist[i]->distribution.getMaxW());
-        printf("		Spread: %d / %d\n", params.m_spreadlvl, params.num_spreadings);
+        printf("		Spread: %u / %u\n", params.m_spreadlvl, params.num_spreadings);
         printf("		Kernel: %d \n", params.kernel_size);
         printf("		ImageSobelTh: %f \n", params.image_sobel_th);
         printf("		ModelSobelTh: %f \n", params.model_sobel_th);
