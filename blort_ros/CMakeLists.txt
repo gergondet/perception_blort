@@ -3,6 +3,7 @@ project(blort_ros)
 
 find_package(catkin REQUIRED COMPONENTS
   blort
+  siftgpu
   roscpp
   geometry_msgs
   tf
@@ -21,6 +22,7 @@ generate_dynamic_reconfigure_options(
 )
 
 include_directories(include ${catkin_INCLUDE_DIRS})
+link_directories(${catkin_LIBRARY_DIRS})
 
 catkin_package()
 

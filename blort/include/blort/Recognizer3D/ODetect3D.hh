@@ -10,7 +10,7 @@
 
 //#include <opencv/cv.h>
 #include <opencv2/opencv.hpp>
-#include <SiftGPU.h>
+#include <siftgpu/SiftGPU.h>
 #include <blort/Recognizer3D/KeyClusterPair.hh>
 #include <blort/Recognizer3D/Definitions.hh>
 #include <blort/Recognizer3D/Geometry.hh>

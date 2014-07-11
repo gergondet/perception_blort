@@ -32,13 +32,13 @@
 #include <math.h>
 using namespace std;
 
-#include "GlobalUtil.h"
-#include "GLTexImage.h"
-#include "CLTexImage.h" 
-#include "SiftGPU.h"
-#include "SiftPyramid.h"
-#include "ProgramCL.h"
-#include "PyramidCL.h"
+#include "siftgpu/GlobalUtil.h"
+#include "siftgpu/GLTexImage.h"
+#include "siftgpu/CLTexImage.h" 
+#include "siftgpu/SiftGPU.h"
+#include "siftgpu/SiftPyramid.h"
+#include "siftgpu/ProgramCL.h"
+#include "siftgpu/PyramidCL.h"
 
 
 #define USE_TIMING()		double t, t0, tt;
