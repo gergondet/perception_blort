@@ -8,7 +8,7 @@
 
 #include <limits.h>
 #include <GL/glut.h>
-#include <SiftGPU.h>
+#include <siftgpu/SiftGPU.h>
 
 #include <blort/Recognizer3D/PNamespace.hh>
 #include <blort/Recognizer3D/KeypointDescriptor.hh>
