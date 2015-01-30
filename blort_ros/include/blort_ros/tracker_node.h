@@ -163,6 +163,7 @@ private:
     TrackerNode* parent_;
     std::vector<geometry_msgs::Pose> results_list;
 
+    ros::Subscriber image_sub;
     sensor_msgs::ImageConstPtr lastImage;
     sensor_msgs::CameraInfoConstPtr lastCameraInfo;
 
@@ -174,7 +175,7 @@ private:
   public:
     SingleShotMode(TrackerNode* parent);
 
-    void imageCallback(const sensor_msgs::ImageConstPtr &image);
+    void singleShotServiceImageCallback(const sensor_msgs::ImageConstPtr &image, blort_msgs::EstimatePose::Request & req);
 
     void cameraCallback(const sensor_msgs::CameraInfoConstPtr &camera_info);
 

@@ -241,6 +241,7 @@ TrackerNode::SingleShotMode::SingleShotMode(TrackerNode* parent)
       (new dynamic_reconfigure::Server<blort_ros::TrackerConfig>());
   parent_->f_ = boost::bind(&SingleShotMode::reconf_callback, this, _1, _2);
   parent_->server_->setCallback(parent_->f_);
+  parent_->recovery_client = parent_->nh_.serviceClient<blort_msgs::RecoveryCall>("/blort_detector/pose_service");
 
   time_to_run_singleshot = 10.;
   inServiceCall = false;
@@ -283,74 +284,85 @@ bool TrackerNode::SingleShotMode::singleShotService(blort_msgs::EstimatePose::Re
   lastImage.reset();
   lastImage = ros::topic::waitForMessage<sensor_msgs::Image>("/detector_image", parent_->nh_, ros::Duration(1.0));
   lastCameraInfo.reset();
-  lastCameraInfo = ros::topic::waitForMessage<sensor_msgs::CameraInfo>("/detector_camera_info", parent_->nh_, ros::Duration(1.0));
+  lastCameraInfo = ros::topic::waitForMessage<sensor_msgs::CameraInfo>("/detector_camera_info", parent_->nh_, ros::Duration(2.0));
 
-  if(lastImage.use_count() < 1 && lastCameraInfo.use_count() < 1)
+  if(lastImage.use_count() < 1 || lastCameraInfo.use_count() < 1)
   {
     ROS_ERROR("Service called but there was no data on the input topics!");
     return false;
   }
+  ROS_INFO("Singleshot service has been called with a timeout of %f seconds.", time_to_run_singleshot);
+  results_list.clear();
+
+  if(parent_->tracker == 0)
+  {
+    parent_->tracker = new blort_ros::GLTracker(*lastCameraInfo, parent_->root_, true);
+    parent_->recovery_client = parent_->nh_.serviceClient<blort_msgs::RecoveryCall>("/blort_detector/pose_service");
+  }
   else
   {
-    ROS_INFO("Singleshot service has been called with a timeout of %f seconds.", time_to_run_singleshot);
+    parent_->tracker->reset();
+    parent_->recovery_answers.clear();
+  }
+  parent_->tracker->enableAllTracking(false);
+  parent_->tracker->setTracked(req.request, true);
+
+  parent_->tracker->setPublishMode(blort_ros::TRACKER_PUBLISH_GOOD);
+  parent_->tracker->setVisualizeObjPose(true);
+  blort_msgs::SetCameraInfo camera_info;
+  camera_info.request.CameraInfo = *lastCameraInfo;
+  if(!detector_set_caminfo_service.call(camera_info))
+    ROS_ERROR("blort_tracker failed to call blort_detector/set_camera_info service");
+
+  image_sub = parent_->nh_.subscribe<sensor_msgs::Image>("/detector_image", 1, boost::bind(&TrackerNode::SingleShotMode::singleShotServiceImageCallback, this, _1, boost::ref(req)));
+  double start_secs = ros::Time::now().toSec();
+  while(ros::Time::now().toSec()-start_secs < time_to_run_singleshot)
+  {
+    ros::spinOnce();
+    if(req.fast && results_list.size())
+    {
+      break;
+    }
+    //ROS_INFO("Remaining time %f", time_to_run_singleshot+start_secs-ros::Time::now().toSec());
+  }
+  // we are out of the service call now, the results will be published
+  image_sub.shutdown();
+  inServiceCall = false;
+  if(!results_list.empty())
+  {
+    //convert results to a tf style transform and multiply them
+    //to get the camera-to-target transformation
+    resp.Pose = blort_ros::blortPosesToRosPose(parent_->tracker->getCameraReferencePose(),
+                                               results_list.back());
+    //NOTE: check the pose in vec3 location + mat3x3 rotation could be added here
+    // if we have any previous knowledge of the given scene
+    ROS_INFO_STREAM("PUBLISHED POSE:" << std::endl << resp.Pose.position << std::endl <<
+                    blort_ros::quaternionTo3x3cvMat(resp.Pose.orientation) << std::endl);
+    return true;
+  }
+  else
+  {
+    //if the time was not enough to get a good detection, make the whole thing fail
+    return false;
+  }
+}
+
+void TrackerNode::SingleShotMode::singleShotServiceImageCallback(const sensor_msgs::ImageConstPtr &image, blort_msgs::EstimatePose::Request & req)
+{
+  parent_->imageCb(image, image);
+  if(parent_->tracker->getConfidence(req.request) == blort_ros::TRACKER_CONF_FAIR || parent_->tracker->getConfidence(req.request) == blort_ros::TRACKER_CONF_GOOD)
+  {
+    // instead of returning right away let's store the result
+    // to see if the tracker can get better
+    geometry_msgs::Pose p = parent_->tracker->getDetections()[req.request];
+    if(! ( isnan(p.orientation.x) || ( p.orientation.x == 0 && p.orientation.y == 0 && p.orientation.z == 0 && p.orientation.w == 0 )  ) )
+    {
+      results_list.push_back(p);
+    }
+  }
+  else if(parent_->tracker->getConfidence(req.request) == blort_ros::TRACKER_CONF_LOST)
+  {
     results_list.clear();
-
-    if(parent_->tracker == 0)
-    {
-      parent_->tracker = new blort_ros::GLTracker(*lastCameraInfo, parent_->root_, true);
-      parent_->recovery_client = parent_->nh_.serviceClient<blort_msgs::RecoveryCall>("/blort_detector/pose_service");
-    }
-    else
-    {
-      parent_->tracker->reset();
-      parent_->recovery_answers.clear();
-    }
-    //HACK: hardcoded tracking for pringles
-    parent_->tracker->enableAllTracking(false);
-    parent_->tracker->setTracked("Pringles", true);
-
-    parent_->tracker->setPublishMode(blort_ros::TRACKER_PUBLISH_GOOD);
-    parent_->tracker->setVisualizeObjPose(true);
-    blort_msgs::SetCameraInfo camera_info;
-    camera_info.request.CameraInfo = *lastCameraInfo;
-    if(!detector_set_caminfo_service.call(camera_info))
-      ROS_ERROR("blort_tracker failed to call blort_detector/set_camera_info service");
-
-    double start_secs = ros::Time::now().toSec();
-    while(ros::Time::now().toSec()-start_secs < time_to_run_singleshot)
-    {
-      ROS_INFO("Remaining time %f", time_to_run_singleshot+start_secs-ros::Time::now().toSec());
-      parent_->imageCb(lastImage, lastImage);
-      if(parent_->tracker->getConfidence("Pringles") == blort_ros::TRACKER_CONF_FAIR) // HACK
-      {
-        // instead of returning right away let's store the result
-        // to see if the tracker can get better
-        results_list.push_back(parent_->tracker->getDetections()["Pringles"]); // HACK
-      }
-      else if(parent_->tracker->getConfidence("Pringles") == blort_ros::TRACKER_CONF_LOST) // HACK
-      {
-        results_list.clear();
-      }
-    }
-    // we are out of the service call now, the results will be published
-    inServiceCall = false;
-    if(!results_list.empty())
-    {
-      //convert results to a tf style transform and multiply them
-      //to get the camera-to-target transformation
-      resp.Pose = blort_ros::blortPosesToRosPose(parent_->tracker->getCameraReferencePose(),
-                                                 results_list.back());
-      //NOTE: check the pose in vec3 location + mat3x3 rotation could be added here
-      // if we have any previous knowledge of the given scene
-      ROS_INFO_STREAM("PUBLISHED POSE:" << std::endl << resp.Pose.position << std::endl <<
-                      blort_ros::quaternionTo3x3cvMat(resp.Pose.orientation) << std::endl);
-      return true;
-    }
-    else
-    {
-      //if the time was not enough to get a good detection, make the whole thing fail
-      return false;
-    }
   }
 }
 

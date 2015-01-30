@@ -1,0 +1,18 @@
+<launch>
+    <arg name="image" default="/camera/rgb/image_raw" />
+    <arg name="info"  default="/camera/rgb/camera_info" />
+
+    <!-- Tracker node -->
+    <node pkg="blort_ros" type="gltracker_node" name="blort_tracker" args="$(find blort_ros)" output="screen">
+        <param name="launch_mode" value="singleshot" />
+        <remap from="/detector_camera_info" to="$(arg info)" />
+        <remap from="/detector_image" to="$(arg image)" />
+        <remap from="/tracker_image" to="$(arg image)" />
+    </node>
+
+    <!-- Detector node -->
+    <node pkg="blort_ros" type="gldetector_node" name="blort_detector" args="$(find blort_ros)" output="screen">
+        <remap from="/blort_camera_info" to="$(arg info)" />
+    </node>
+
+</launch>

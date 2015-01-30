@@ -1,2 +1,4 @@
+string request
+bool fast
 ---
 geometry_msgs/Pose Pose
