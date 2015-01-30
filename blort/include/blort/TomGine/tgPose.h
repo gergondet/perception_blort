@@ -47,4 +47,6 @@ public:
 
 } // namespace TomGine
 
+std::ostream& operator<<(std::ostream &os, const TomGine::tgPose &p);
+
 #endif

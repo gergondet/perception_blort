@@ -147,3 +147,9 @@ void tgPose::Translate(vec3 trans){
 	t.y = t.y + trans.y;
 	t.z = t.z + trans.z;
 }
+
+std::ostream& operator<<(std::ostream &os, const TomGine::tgPose &p)
+{
+  os << "tx ty tz qx qy qz qw" << std::endl;
+  os << p.t.x << " " <<  p.t.y << " " <<  p.t.z << " " <<  p.q.x << " " <<  p.q.y << " " <<  p.q.z << " " <<  p.q.w;
+}
