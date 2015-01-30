@@ -379,7 +379,6 @@ void GLTracker::update()
       tracker.getModelQualityState(model_ids[obj.name], obj.quality);
       ROS_INFO_STREAM("GLTracker::update: the tracked model for " << obj.name << " has set quality to " << obj.quality);
       tracker.getModelConfidenceState(model_ids[obj.name], obj.tracking_conf);
-
       switch(obj.tracking_conf)
       {
       case Tracking::ST_GOOD:
@@ -397,7 +396,7 @@ void GLTracker::update()
         break;
       case Tracking::ST_BAD:
         this->current_confs[obj.name] = blort_ros::TRACKER_CONF_FAIR;
-        if(publish_mode == TRACKER_PUBLISH_ALL)
+        if(publish_mode == TRACKER_PUBLISH_ALL || publish_mode == publish_mode == TRACKER_PUBLISH_GOOD_AND_FAIR)
           updatePoseResult(obj.name);
         break;
       default:
@@ -411,9 +410,9 @@ void GLTracker::update()
 void GLTracker::reset(const std::vector<std::string> & params)
 {
   ROS_INFO("GLTracker::reset: switching tracker to RECOVERY_MODE");
-  if(!params.empty())
+  if(params.empty())
   {
-    for(size_t i = 0; i < model_ids.size(); ++i)
+    for(size_t i = 0; i < objects_.size(); ++i)
     {
       switchToRecovery(objects_[i].name);
     }
